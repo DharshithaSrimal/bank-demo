@@ -40,6 +40,7 @@ public class WelcomeScreen extends javax.swing.JFrame {
         btnCont = new javax.swing.JButton();
         btnClose = new javax.swing.JButton();
         btnHelp = new javax.swing.JButton();
+        btnCont1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,11 +48,11 @@ public class WelcomeScreen extends javax.swing.JFrame {
 
         jLabel16.setFont(new java.awt.Font("Narkisim", 1, 48)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel16.setText("Welcome to Student Information System");
+        jLabel16.setText("Bank Account Management System");
 
         btnCont.setFont(new java.awt.Font("Narkisim", 1, 36)); // NOI18N
         btnCont.setForeground(new java.awt.Color(255, 0, 255));
-        btnCont.setText("Continue");
+        btnCont.setText("Manager");
         btnCont.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnContActionPerformed(evt);
@@ -76,6 +77,15 @@ public class WelcomeScreen extends javax.swing.JFrame {
             }
         });
 
+        btnCont1.setFont(new java.awt.Font("Narkisim", 1, 36)); // NOI18N
+        btnCont1.setForeground(new java.awt.Color(255, 0, 255));
+        btnCont1.setText("Cashier");
+        btnCont1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCont1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -85,13 +95,18 @@ public class WelcomeScreen extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(335, 335, 335)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnCont, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnClose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnClose, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
                             .addComponent(btnHelp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(jLabel16)))
                 .addContainerGap(12, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCont)
+                .addGap(59, 59, 59)
+                .addComponent(btnCont1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(157, 157, 157))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,7 +114,9 @@ public class WelcomeScreen extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addComponent(jLabel16)
                 .addGap(88, 88, 88)
-                .addComponent(btnCont, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCont, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCont1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -113,7 +130,7 @@ public class WelcomeScreen extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 107, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,6 +158,13 @@ public class WelcomeScreen extends javax.swing.JFrame {
         h.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnHelpActionPerformed
+
+    private void btnCont1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCont1ActionPerformed
+        // TODO add your handling code here:
+        ApplicationMainMenu amm = new ApplicationMainMenu();
+        amm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCont1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -185,6 +209,7 @@ public class WelcomeScreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnCont;
+    private javax.swing.JButton btnCont1;
     private javax.swing.JButton btnHelp;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JPanel jPanel1;
