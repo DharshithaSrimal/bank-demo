@@ -39,7 +39,7 @@ public class AccountDAO {
     private static final String SELECT_ACCOUNT_BY_ID =  "SELECT * FROM tblAccount WHERE acct_no = ?";
     private static final String SELECT_ALL_ACCOUNTS = "SELECT acct_no, customer_name, deposit, withdraw, balance, date FROM transactions ORDER BY date DESC";
     private static final String DELETE_ACCOUNT_SQL = "delete from users where id = ?;";
-    private static final String UPDATE_ACCOUNT_SQL = "update users set name = ?,email= ?, country =? where id = ?;";
+    private static final String UPDATE_ACCOUNT_SQL = "UPDATE  tblAccount SET customer_name = ?,  sex = ?, branch = ?, initial_balance = ? WHERE acct_no = ?";
 	
     protected Connection getConnection(){
 	Connection connection = null;
@@ -104,6 +104,48 @@ public class AccountDAO {
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
+	}
+    
+    //Update account
+    public void updateAccount(Account account) throws ClassNotFoundException {
+		try {
+                    Class.forName(DRIVER);
+                    conn = DriverManager.getConnection(DATABASE_URL, "root", "");
+                    statement = conn.createStatement();
+                    PreparedStatement preparedStatement = conn.prepareStatement(UPDATE_ACCOUNT_SQL);
+                    preparedStatement.setString(1, account.getCustomerName());
+                    preparedStatement.setString(2, account.getSex());
+                    preparedStatement.setString(3, account.getBranch());
+                    preparedStatement.setDouble(4, account.getInitialBalance());
+                    preparedStatement.setString(5, account.getAcctNo());
+                    System.out.println(preparedStatement);
+                    
+                    // Execute the query or update query
+                    preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+	}
+    
+    //Delete account
+     public boolean deleteAccount(String accountNo) throws ClassNotFoundException {
+        boolean rowDeleted = false;
+		try {
+                    Class.forName(DRIVER);
+                    conn = DriverManager.getConnection(DATABASE_URL, "root", "");
+                    statement = conn.createStatement();
+                    PreparedStatement preparedStatement = conn.prepareStatement(DELETE_ACCOUNT_SQL);
+                    preparedStatement.setString(1, accountNo);
+                    
+                    System.out.println(preparedStatement);                 
+                    // Execute the query or update query
+                    rowDeleted = preparedStatement.executeUpdate() > 0;
+
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+            return rowDeleted;    
 	}
 	
     private void printSQLException(SQLException ex) {

@@ -902,27 +902,17 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Please Fill in All Required Information!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 double initial_balance1 = Double.parseDouble(initial_balance);
-                Class.forName(DRIVER);
-                // Establish conn to database
-                conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-                String query = "SELECT *FROM tblAccount WHERE acct_no ='" + acctNo + "'";
-                ps = (PreparedStatement) conn.prepareStatement(query);
-                rs = ps.executeQuery();
-                while (rs.next()) {
-                    AcctNumber = rs.getString("acct_no");
+                Account existingcount = account.selectAccount(acctNo);
+                        
+                if (existingcount != null ) {
+                    AcctNumber = existingcount.getAcctNo();
                 }
                 if (!acctNo.intern().equals(AcctNumber.intern())) {
                     //Info Doesn't Exist
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + acctNo + " Doesn't Exist!", "Banking System - Bank Acct Doesn't Exist.", JOptionPane.INFORMATION_MESSAGE);
                 } else if (acctNo.intern().equals(AcctNumber.intern())) {
-                    ps = (PreparedStatement) conn.prepareStatement("UPDATE  tblAccount SET customer_name ='" + customerName + "' WHERE acct_no ='" + acctNo + "'");
-                    ps.executeUpdate();
-                    ps = (PreparedStatement) conn.prepareStatement("UPDATE  tblAccount SET sex ='" + sex + "' WHERE acct_no ='" + acctNo + "'");
-                    ps.executeUpdate();
-                    ps = (PreparedStatement) conn.prepareStatement("UPDATE  tblAccount SET branch ='" + branch + "' WHERE acct_no ='" + acctNo + "'");
-                    ps.executeUpdate();
-                    ps = (PreparedStatement) conn.prepareStatement("UPDATE  tblAccount SET initial_balance ='" + initial_balance1 + "' WHERE acct_no ='" + acctNo + "'");
-                    ps.executeUpdate();
+                    Account updateAccount = new Account(acctNo, customerName, sex, branch,  initial_balance1);
+                    account.updateAccount(updateAccount);
                     //Successfully Updated
                     JOptionPane.showMessageDialog(this, "Bank Acct Information has been Updated Successfully!", "Banking System - Bank Acct Updated.", JOptionPane.INFORMATION_MESSAGE);
                 }
