@@ -14,6 +14,7 @@ public class Account {
     private String customerName;
     private String sex;
     private String branch;
+    private double initialBalance;
 
     public void setAcctNo(String acctNo) {
         this.acctNo = acctNo;
@@ -46,5 +47,22 @@ public class Account {
     public String getBranch() {
         return branch;
     }
+    
+    public void setInitialBalance(double initialBalance) {
+        this.initialBalance = initialBalance;
+    }
 
+    public double getInitialBalance() {
+        return initialBalance;
+    }
+
+    public Account(String acctNo, String customerName, String sex, String branch, double initialBalance) {
+	super();
+	this.acctNo = acctNo;
+        this.customerName = customerName;
+        this.sex = sex;
+        this.branch = branch;
+        this.initialBalance = initialBalance;
+    }
+    
 }

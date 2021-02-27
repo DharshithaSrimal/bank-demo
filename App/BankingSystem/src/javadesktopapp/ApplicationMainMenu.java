@@ -14,6 +14,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import com.bankingsystem.dao.AccountDAO;
+import com.bankingsystem.model.Account;
 
 /**
  *
@@ -28,7 +30,8 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     Statement statement = null; // Query statement
     PreparedStatement ps; //Prepared statement
     ResultSet rs; //Result set
-
+    AccountDAO account = new AccountDAO();
+    
     /**
      * Creates new form BankInfoSyst
      */
@@ -119,6 +122,8 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         jTabbedPane1.setBackground(new java.awt.Color(204, 204, 204));
         jTabbedPane1.setForeground(new java.awt.Color(0, 102, 102));
         jTabbedPane1.setFont(new java.awt.Font("Eras Demi ITC", 1, 26)); // NOI18N
+
+        jPanel3.setName("initialBalance"); // NOI18N
 
         jLabel9.setFont(new java.awt.Font("Eras Bold ITC", 0, 36)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 153, 153));
@@ -213,6 +218,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
 
         txtInitialBalance.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
         txtInitialBalance.setForeground(new java.awt.Color(0, 153, 153));
+        txtInitialBalance.setName("initialBalance"); // NOI18N
 
         cboBranch.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
         cboBranch.setForeground(new java.awt.Color(0, 153, 153));
@@ -828,24 +834,20 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             if (acctNo.isEmpty() || customerName.isEmpty() || se == 0 || br == 0 || initial_balance.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Fill in All Required Information!", "Banking SYstem - Required Information.", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                Class.forName(DRIVER);
-                conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-                statement = conn.createStatement();
+                
+                Account existingcount = account.selectAccount(acctNo);
                 double initial_balance1 = Double.parseDouble(initial_balance);
-                String query = "SELECT *FROM tblAccount WHERE acct_no ='" + acctNo + "'";
-                ps = (PreparedStatement) conn.prepareStatement(query);
-                rs = ps.executeQuery();
-                while (rs.next()) {
-                    AcctNumber = rs.getString("acct_no");
+                
+                if (existingcount != null ) {
+                    AcctNumber = existingcount.getAcctNo();
                 }
                 if (acctNo.intern().equals(AcctNumber.intern())) {
                     //Info Already Exist (Must Not Insert Duplicate Info)
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + acctNo + " Already Exist!", "Banking System - Bank Already Exist.", JOptionPane.INFORMATION_MESSAGE);
                 } else if (!acctNo.intern().equals(AcctNumber.intern())) {
-                    statement = conn.createStatement();
-                    String sql = "INSERT INTO tblAccount(acct_no, customer_name, sex, branch, initial_balance) VALUES ('" + acctNo + "' , '" + customerName + "', '" + sex + "', '" + branch + "', '" + initial_balance1 + "')";
-                    statement.executeUpdate(sql);
-                    // Successfully Registered
+              
+                    Account newAccount = new Account(acctNo, customerName, sex, branch,  initial_balance1);
+                    account.createAccount(newAccount);
                     JOptionPane.showMessageDialog(this, "Bank Account has been Created Successfully!", "Banking System - Bank Account Created.", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -864,24 +866,16 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             if (acctNo.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter Bank Account Number to Search!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                Class.forName(DRIVER);
-                // Establish conn to database
-                conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-                statement = conn.createStatement();
-                String sql = "SELECT * FROM tblAccount WHERE acct_no='" + acctNo + "'";
-                rs = statement.executeQuery(sql);
-                while (rs.next()) {
-                    // Add 5 elements to the array list
-                    for (int i = 0; i < 5; i++) {
-                        array.add(rs.getString(i + 1));
-                    }
-                }
-                if (!array.isEmpty()) {
-                    txtAcctNo.setText(array.get(0).toString());
-                    txtCustomerName.setText(array.get(1).toString());
-                    cboSex.setSelectedItem(array.get(2).toString());
-                    cboBranch.setSelectedItem(array.get(3).toString());
-                    txtInitialBalance.setText(array.get(4).toString());
+                
+                AccountDAO existingAccount = existingAccount = new AccountDAO();
+                Account account = existingAccount.selectAccount(acctNo);
+                
+                if (account != null ) {
+                    txtAcctNo.setText(account.getAcctNo());
+                    txtCustomerName.setText(account.getCustomerName());
+                    cboSex.setSelectedItem(account.getSex());
+                    cboBranch.setSelectedItem(account.getBranch());
+                    txtInitialBalance.setText(String.valueOf(account.getInitialBalance()));
                 } else {
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + txtSearchAcctNo.getText() + " Not Found!", "Banking System - Bank Not Found", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -1102,13 +1096,13 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                         array.add(rs.getString(i + 1));
                     }
                 }
-                if (!array.isEmpty()) {
+                /*if (!array.isEmpty()) {
                     txtSearchAcctNo1.setText(array.get(0).toString());
                     txtCustomerName1.setText(array.get(1).toString());
                     txtCurrBal1.setText(array.get(4).toString());
                 } else {
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + txtSearchAcctNo.getText() + " Not Found!", "Banking System - Bank Not Found", JOptionPane.INFORMATION_MESSAGE);
-                }
+                }*/
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error! Can't Connect be to Database! Please Contact System Administrator.", "Banking System - Connection Error.", JOptionPane.ERROR_MESSAGE);
