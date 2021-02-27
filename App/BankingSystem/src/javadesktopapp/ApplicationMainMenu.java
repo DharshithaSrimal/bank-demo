@@ -34,7 +34,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     Statement statement = null; // Query statement
     PreparedStatement ps; //Prepared statement
     ResultSet rs; //Result set
-    
+
     /**
      * Creates new form BankInfoSyst
      */
@@ -47,9 +47,58 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         txtCurrBal1.setEditable(false);
         txtCustomerName2.setEditable(false);
         txtCurrBal2.setEditable(false);
-
+        getAllUsers();
     }
 
+    public ApplicationMainMenu(String userType) {
+        // super(Title) 
+        super("Banking Information System");
+        initComponents();
+        setLocationRelativeTo(null);
+        txtCustomerName1.setEditable(false);
+        txtCurrBal1.setEditable(false);
+        txtCustomerName2.setEditable(false);
+        txtCurrBal2.setEditable(false);
+        jPanel3.setVisible(false);
+        if (userType == "Cashier") {
+            btnOpenAcct.setVisible(false);
+            btnDeleteAcct.setVisible(false);
+        } else if (userType == "Manager") {
+            btnOpenAcct.setVisible(true);
+            btnDeleteAcct.setVisible(true);
+        }
+        getAllUsers();
+    }
+
+    public void getAllUsers(){
+        DefaultTableModel model = (DefaultTableModel) tblAllUsers.getModel();
+        try {
+            
+            int total = 0;
+            int rows = 0;
+            AccountDAO account = new AccountDAO();
+            List<Account> accountUsers = (List<Account>) account.viewAllAccounts();
+            //System.out.println();
+            while (accountUsers.size() > rows) {
+                model.setValueAt(accountUsers.get(rows).getAcctNo(), rows, 0);
+                model.setValueAt(accountUsers.get(rows).getCustomerName(), rows, 1);
+                model.setValueAt(accountUsers.get(rows).getBranch(), rows, 2);
+                model.setValueAt(accountUsers.get(rows).getInitialBalance(), rows, 3);
+                rows++;
+                total = rows;
+
+            }
+            String tot = String.valueOf(rows);
+            lblTotal.setText(tot);
+
+            if (total == 0) {
+                JOptionPane.showMessageDialog(this, "No Record Found");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -80,6 +129,8 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         txtAcctNo = new javax.swing.JTextField();
         txtInitialBalance = new javax.swing.JTextField();
         cboBranch = new javax.swing.JComboBox();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblAllUsers = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -227,6 +278,67 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         cboBranch.setForeground(new java.awt.Color(0, 153, 153));
         cboBranch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Branch", "Adama", "Addis Ababa", "Assosa", "Bahr Dar", "Dire Dawa", "Gondar", "Jimma", "Mekele", "Wolayita Sodo" }));
 
+        tblAllUsers.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        tblAllUsers.setForeground(new java.awt.Color(0, 153, 153));
+        tblAllUsers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Bank Account", "Customer Name", "Branch", "Current Balance"
+            }
+        ));
+        jScrollPane2.setViewportView(tblAllUsers);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -268,7 +380,9 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                         .addComponent(btnDeleteAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(441, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,7 +420,11 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                     .addComponent(btnModifyAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDeleteAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Open Account", jPanel3);
@@ -391,7 +509,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addComponent(jLabel26)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(3, 3, 3)
@@ -401,7 +519,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                         .addComponent(txtSearchAcctNo1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(438, Short.MAX_VALUE))))
+                        .addContainerGap(527, Short.MAX_VALUE))))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -555,7 +673,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                         .addComponent(txtSearchAcctNo2, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSearch4, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(426, Short.MAX_VALUE))
+                .addContainerGap(605, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -676,6 +794,10 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             }
         ));
         jScrollPane1.setViewportView(tblTransactions);
+        if (tblTransactions.getColumnModel().getColumnCount() > 0) {
+            tblTransactions.getColumnModel().getColumn(2).setHeaderValue("Deposit");
+            tblTransactions.getColumnModel().getColumn(3).setHeaderValue("Withdrawal");
+        }
 
         jLabel24.setFont(new java.awt.Font("Eras Light ITC", 1, 24)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(0, 153, 153));
@@ -691,25 +813,26 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(155, 155, 155)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 794, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel4Layout.createSequentialGroup()
                             .addComponent(jLabel24)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(lblTotal))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel17)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel23)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtSearchAcctNo3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnSearch2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(2, 2, 2)
-                        .addComponent(btnViewAll, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(140, Short.MAX_VALUE))
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel17)
+                                .addGroup(jPanel4Layout.createSequentialGroup()
+                                    .addComponent(jLabel23)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtSearchAcctNo3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnViewAll, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnSearch2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(135, 135, 135))))
+                .addContainerGap(243, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -792,32 +915,29 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         try {
             String acctNo = txtSearchAcctNo3.getText();
             int total = 0;
-            if (acctNo.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please Enter Bank Account Number to Search!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-     
-                int rows = 0;
-                TransactionDAO transaction= new TransactionDAO();
-                List<Transaction> accountTransaction = transaction.viewAllTransactions();
-                //System.out.println();
-                while (accountTransaction.size() > rows ) {
-                    model.setValueAt(accountTransaction.get(rows).getAcctNo(), rows, 0);
-                    model.setValueAt(accountTransaction.get(rows).getCustomerName(), rows, 1);
-                    model.setValueAt(accountTransaction.get(rows).getDeposit(), rows, 2);
-                    model.setValueAt(accountTransaction.get(rows).getWithdraw(), rows, 3);
-                    model.setValueAt(accountTransaction.get(rows).getBalance(), rows, 4);
-                    model.setValueAt(accountTransaction.get(rows).getDate(), rows, 5);
-                    rows++;
-                    total = rows;
-                    
-                }
-                String tot = String.valueOf(rows);
-                lblTotal.setText(tot);
-                
-                if (total == 0) {
-                    JOptionPane.showMessageDialog(this, "No Record Found Matching Your Search Criteria " + acctNo + "", "Banking System - No Record Found.", JOptionPane.INFORMATION_MESSAGE);
-                }
+
+            int rows = 0;
+            TransactionDAO transaction = new TransactionDAO();
+            List<Transaction> accountTransaction = transaction.viewAllTransactions();
+            //System.out.println();
+            while (accountTransaction.size() > rows) {
+                model.setValueAt(accountTransaction.get(rows).getAcctNo(), rows, 0);
+                model.setValueAt(accountTransaction.get(rows).getCustomerName(), rows, 1);
+                model.setValueAt(accountTransaction.get(rows).getDeposit(), rows, 2);
+                model.setValueAt(accountTransaction.get(rows).getWithdraw(), rows, 3);
+                model.setValueAt(accountTransaction.get(rows).getBalance(), rows, 4);
+                model.setValueAt(accountTransaction.get(rows).getDate(), rows, 5);
+                rows++;
+                total = rows;
+
             }
+            String tot = String.valueOf(rows);
+            lblTotal.setText(tot);
+
+            if (total == 0) {
+                JOptionPane.showMessageDialog(this, "No Record Found Matching Your Search Criteria " + acctNo + "", "Banking System - No Record Found.", JOptionPane.INFORMATION_MESSAGE);
+            }
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
@@ -842,16 +962,16 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 AccountDAO account = new AccountDAO();
                 Account existingcount = account.selectAccount(acctNo);
                 double initial_balance1 = Double.parseDouble(initial_balance);
-                
-                if (existingcount != null ) {
+
+                if (existingcount != null) {
                     AcctNumber = existingcount.getAcctNo();
                 }
                 if (acctNo.intern().equals(AcctNumber.intern())) {
                     //Info Already Exist (Must Not Insert Duplicate Info)
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + acctNo + " Already Exist!", "Banking System - Bank Already Exist.", JOptionPane.INFORMATION_MESSAGE);
                 } else if (!acctNo.intern().equals(AcctNumber.intern())) {
-              
-                    Account newAccount = new Account(acctNo, customerName, sex, branch,  initial_balance1);
+
+                    Account newAccount = new Account(acctNo, customerName, sex, branch, initial_balance1);
                     account.createAccount(newAccount);
                     JOptionPane.showMessageDialog(this, "Bank Account has been Created Successfully!", "Banking System - Bank Account Created.", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -872,8 +992,8 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             } else {
                 AccountDAO account = new AccountDAO();
                 Account existingAccount = account.selectAccount(acctNo);
-                
-                if (existingAccount != null ) {
+
+                if (existingAccount != null) {
                     txtAcctNo.setText(existingAccount.getAcctNo());
                     txtCustomerName.setText(existingAccount.getCustomerName());
                     cboSex.setSelectedItem(existingAccount.getSex());
@@ -907,15 +1027,15 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 double initial_balance1 = Double.parseDouble(initial_balance);
                 AccountDAO account = new AccountDAO();
                 Account existingcount = account.selectAccount(acctNo);
-                        
-                if (existingcount != null ) {
+
+                if (existingcount != null) {
                     AcctNumber = existingcount.getAcctNo();
                 }
                 if (!acctNo.intern().equals(AcctNumber.intern())) {
                     //Info Doesn't Exist
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + acctNo + " Doesn't Exist!", "Banking System - Bank Acct Doesn't Exist.", JOptionPane.INFORMATION_MESSAGE);
                 } else if (acctNo.intern().equals(AcctNumber.intern())) {
-                    Account updateAccount = new Account(acctNo, customerName, sex, branch,  initial_balance1);
+                    Account updateAccount = new Account(acctNo, customerName, sex, branch, initial_balance1);
                     account.updateAccount(updateAccount);
                     //Successfully Updated
                     JOptionPane.showMessageDialog(this, "Bank Acct Information has been Updated Successfully!", "Banking System - Bank Acct Updated.", JOptionPane.INFORMATION_MESSAGE);
@@ -984,12 +1104,12 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             if (acctNo.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter Bank Account Number to Search!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
             } else {
-     
+
                 int rows = 0;
-                TransactionDAO transaction= new TransactionDAO();
+                TransactionDAO transaction = new TransactionDAO();
                 List<Transaction> accountTransaction = transaction.selectTransactionsById(acctNo);
                 //System.out.println();
-                while (accountTransaction.size() > rows ) {
+                while (accountTransaction.size() > rows) {
                     model.setValueAt(accountTransaction.get(rows).getAcctNo(), rows, 0);
                     model.setValueAt(accountTransaction.get(rows).getCustomerName(), rows, 1);
                     model.setValueAt(accountTransaction.get(rows).getDeposit(), rows, 2);
@@ -998,11 +1118,11 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                     model.setValueAt(accountTransaction.get(rows).getDate(), rows, 5);
                     rows++;
                     total = rows;
-                    
+
                 }
                 String tot = String.valueOf(rows);
                 lblTotal.setText(tot);
-                
+
                 if (total == 0) {
                     JOptionPane.showMessageDialog(this, "No Record Found Matching Your Search Criteria " + acctNo + "", "Banking System - No Record Found.", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -1028,14 +1148,14 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 double deposit = Double.parseDouble(amount);
                 double bal = currbal1 + deposit; //deposit
                 double withdraw = 0;
-                
+
                 AccountDAO account = new AccountDAO();
                 Account existingAccount = account.selectAccount(acctNo);
-               
+
                 if (existingAccount != null) {
                     AcctNumber = existingAccount.getAcctNo();
                 }
-                
+
                 if (!acctNo.intern().equals(AcctNumber.intern())) {
                     //Info Already Exist (Must Not Insert Duplicate Info)
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + acctNo + " Already Exist!", "Banking System - Bank Already Exist.", JOptionPane.INFORMATION_MESSAGE);
@@ -1067,13 +1187,12 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             } else {
                 AccountDAO account = new AccountDAO();
                 Account existingAccount = account.selectAccount(acctNo);
-               
+
                 if (existingAccount != null) {
                     txtSearchAcctNo1.setText(existingAccount.getAcctNo());
                     txtCustomerName1.setText(existingAccount.getCustomerName());
                     txtCurrBal1.setText(String.valueOf(existingAccount.getInitialBalance()));
-                }
-                else {
+                } else {
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + txtSearchAcctNo.getText() + " Not Found!", "Banking System - Bank Not Found", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -1112,7 +1231,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
 
                 AccountDAO account = new AccountDAO();
                 Account existingAccount = account.selectAccount(acctNo);
-               
+
                 if (existingAccount != null) {
                     AcctNumber = existingAccount.getAcctNo();
                 }
@@ -1128,7 +1247,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                     TransactionDAO transaction = new TransactionDAO();
                     transaction.makeTransaction(newWithdraw);
                     JOptionPane.showMessageDialog(this, "Bank Information has been Deposited Successfully!", "Banking System - Bank Deposited.", JOptionPane.INFORMATION_MESSAGE);
-                
+
                     // Successfully Registered
                     JOptionPane.showMessageDialog(this, "Bank Information has been Withdrawn Successfully!", "Banking System - Bank Registered.", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -1154,13 +1273,12 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             } else {
                 AccountDAO account = new AccountDAO();
                 Account existingAccount = account.selectAccount(acctNo);
-               
+
                 if (existingAccount != null) {
                     txtSearchAcctNo2.setText(existingAccount.getAcctNo());
                     txtCustomerName2.setText(existingAccount.getCustomerName());
                     txtCurrBal2.setText(String.valueOf(existingAccount.getInitialBalance()));
-                }
-                else {
+                } else {
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + txtSearchAcctNo.getText() + " Not Found!", "Banking System - Bank Not Found", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -1261,8 +1379,10 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblTotal;
+    private javax.swing.JTable tblAllUsers;
     private javax.swing.JTable tblTransactions;
     private javax.swing.JTextField txtAcctNo;
     private javax.swing.JTextField txtCurrBal1;

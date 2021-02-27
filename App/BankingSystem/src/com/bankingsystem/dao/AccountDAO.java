@@ -6,6 +6,7 @@
 package com.bankingsystem.dao;
 
 import com.bankingsystem.model.Account;
+import com.bankingsystem.model.Transaction;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -37,7 +38,7 @@ public class AccountDAO {
 
     private static final String INSERT_ACCOUNT_SQL = "INSERT INTO tblAccount(acct_no, customer_name, sex, branch, initial_balance) VALUES (? , ?, ?, ?, ?)";
     private static final String SELECT_ACCOUNT_BY_ID = "SELECT * FROM tblAccount WHERE acct_no = ?";
-    private static final String SELECT_ALL_ACCOUNTS = "SELECT acct_no, customer_name, deposit, withdraw, balance, date FROM transactions ORDER BY date DESC";
+    private static final String SELECT_ALL_ACCOUNTS = "SELECT * FROM tblAccount";
     private static final String DELETE_ACCOUNT_SQL = "delete from users where id = ?;";
     private static final String UPDATE_ACCOUNT_SQL = "UPDATE  tblAccount SET customer_name = ?,  sex = ?, branch = ?, initial_balance = ? WHERE acct_no = ?";
 
@@ -83,7 +84,37 @@ public class AccountDAO {
         }
         return account;
     }
+    
+     //View aall accounts
+    public ArrayList<Account> viewAllAccounts() throws ClassNotFoundException {
 
+        ArrayList<Account> accounts;
+        accounts = new ArrayList<Account>();
+        try {
+
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
+            statement = conn.createStatement();
+            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ALL_ACCOUNTS);
+            System.out.println(preparedStatement);
+            // Execute the query or update query
+            ResultSet rs = preparedStatement.executeQuery();
+
+            // Process the ResultSet object.
+            while (rs.next()) {
+                String accountNo = rs.getString("acct_no");
+                String customerName = rs.getString("customer_name");
+                String sex = rs.getString("sex");
+                String branch = rs.getString("branch");
+                double initialBalance = rs.getDouble("initial_balance");
+              
+                accounts.add(new Account(accountNo, customerName, sex, branch, initialBalance ));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return accounts;
+    }
     //Create account
     public void createAccount(Account account) throws ClassNotFoundException {
 

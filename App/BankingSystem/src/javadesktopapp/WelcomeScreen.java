@@ -142,7 +142,7 @@ public class WelcomeScreen extends javax.swing.JFrame {
 
     private void btnContActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContActionPerformed
         // TODO add your handling code here:
-        ApplicationMainMenu amm = new ApplicationMainMenu();
+        ApplicationMainMenu amm = new ApplicationMainMenu("Manager");
         amm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnContActionPerformed
@@ -161,7 +161,7 @@ public class WelcomeScreen extends javax.swing.JFrame {
 
     private void btnCont1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCont1ActionPerformed
         // TODO add your handling code here:
-        ApplicationMainMenu amm = new ApplicationMainMenu();
+        ApplicationMainMenu amm = new ApplicationMainMenu("Cashier");
         amm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCont1ActionPerformed
