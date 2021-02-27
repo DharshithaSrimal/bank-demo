@@ -9,11 +9,12 @@ package com.bankingsystem.model;
  *
  * @author DHARSHITHA
  */
-public class Account {
+public abstract class Account {
     private String acctNo;
     private String customerName;
     private String sex;
     private String branch;
+    private String accountType;
     private double initialBalance;
 
     public void setAcctNo(String acctNo) {
@@ -56,6 +57,15 @@ public class Account {
         return initialBalance;
     }
 
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+    
+
     public Account(String acctNo, String customerName, String sex, String branch, double initialBalance) {
 	super();
 	this.acctNo = acctNo;
@@ -63,6 +73,16 @@ public class Account {
         this.sex = sex;
         this.branch = branch;
         this.initialBalance = initialBalance;
+    }
+    
+    public Account(String acctNo, String customerName, String sex, String branch, String accountType, double initialBalance) {
+	super();
+	this.acctNo = acctNo;
+        this.customerName = customerName;
+        this.sex = sex;
+        this.branch = branch;
+        this.initialBalance = initialBalance;
+        this.accountType = accountType;
     }
     
 }

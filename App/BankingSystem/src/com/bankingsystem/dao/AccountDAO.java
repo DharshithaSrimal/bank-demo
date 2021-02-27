@@ -6,6 +6,8 @@
 package com.bankingsystem.dao;
 
 import com.bankingsystem.model.Account;
+import com.bankingsystem.model.CommonAccount;
+import com.bankingsystem.model.SavingsAccount;
 import com.bankingsystem.model.Transaction;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -76,8 +78,9 @@ public class AccountDAO {
                 String customerName = rs.getString("customer_name");
                 String sex = rs.getString("sex");
                 String branch = rs.getString("branch");
+                String accountType = rs.getString("account_type");
                 double initialBalance = rs.getDouble("initial_balance");
-                account = new Account(accountNo, customerName, sex, branch, initialBalance);
+                account = new CommonAccount(accountNo, customerName, sex, branch, accountType, initialBalance);
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -106,9 +109,10 @@ public class AccountDAO {
                 String customerName = rs.getString("customer_name");
                 String sex = rs.getString("sex");
                 String branch = rs.getString("branch");
+                String accountType = rs.getString("account_type");
                 double initialBalance = rs.getDouble("initial_balance");
               
-                accounts.add(new Account(accountNo, customerName, sex, branch, initialBalance ));
+                accounts.add(new CommonAccount(accountNo, customerName, sex, branch, accountType, initialBalance ));
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -127,7 +131,8 @@ public class AccountDAO {
             preparedStatement.setString(2, account.getCustomerName());
             preparedStatement.setString(3, account.getSex());
             preparedStatement.setString(4, account.getBranch());
-            preparedStatement.setDouble(5, account.getInitialBalance());
+            preparedStatement.setString(5, account.getAccountType());
+            preparedStatement.setDouble(6, account.getInitialBalance());
             System.out.println(preparedStatement);
             // Execute the query or update query
             preparedStatement.executeUpdate();
