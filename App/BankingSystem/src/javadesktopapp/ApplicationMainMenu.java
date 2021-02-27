@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
 import com.bankingsystem.dao.AccountDAO;
 import com.bankingsystem.dao.TransactionDAO;
 import com.bankingsystem.model.Account;
+import com.bankingsystem.model.FixedAccount;
 import com.bankingsystem.model.SavingsAccount;
 import com.bankingsystem.model.Transaction;
 import java.util.Date;
@@ -48,7 +49,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         txtCurrBal1.setEditable(false);
         txtCustomerName2.setEditable(false);
         txtCurrBal2.setEditable(false);
-        getAllUsers();
+     
     }
 
     public ApplicationMainMenu(String userType) {
@@ -68,14 +69,13 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             btnOpenAcct.setVisible(true);
             btnDeleteAcct.setVisible(true);
         }
-        getAllUsers();
+        
     }
 
     public void getAllUsers() {
         DefaultTableModel model = (DefaultTableModel) tblAllUsers.getModel();
         try {
 
-            int total = 0;
             int rows = 0;
             AccountDAO account = new AccountDAO();
             List<Account> accountUsers = (List<Account>) account.viewAllAccounts();
@@ -84,17 +84,13 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 model.setValueAt(accountUsers.get(rows).getAcctNo(), rows, 0);
                 model.setValueAt(accountUsers.get(rows).getCustomerName(), rows, 1);
                 model.setValueAt(accountUsers.get(rows).getBranch(), rows, 2);
-                model.setValueAt(accountUsers.get(rows).getInitialBalance(), rows, 3);
+                model.setValueAt(accountUsers.get(rows).getAccountType(), rows, 3);
+                model.setValueAt(accountUsers.get(rows).getInitialBalance(), rows, 4);
                 rows++;
-                total = rows;
 
             }
             String tot = String.valueOf(rows);
             lblTotal.setText(tot);
-
-            if (total == 0) {
-                JOptionPane.showMessageDialog(this, "No Record Found");
-            }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
@@ -135,6 +131,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         tblAllUsers = new javax.swing.JTable();
         cboAccountType = new javax.swing.JComboBox();
         jLabel25 = new javax.swing.JLabel();
+        btnSearchAcct1 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -280,65 +277,65 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
 
         cboBranch.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
         cboBranch.setForeground(new java.awt.Color(0, 153, 153));
-        cboBranch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Branch", "Adama", "Addis Ababa", "Assosa", "Bahr Dar", "Dire Dawa", "Gondar", "Jimma", "Mekele", "Wolayita Sodo" }));
+        cboBranch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Branch", "Anuradhapura", "Balangoda", "Colombo", "Gampaha", "Kaluthara", "Rathnapura" }));
 
         tblAllUsers.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         tblAllUsers.setForeground(new java.awt.Color(0, 153, 153));
         tblAllUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Bank Account", "Customer Name", "Branch", "Current Balance"
+                "Bank Account", "Customer Name", "Branch", "Account Type", "Current Balance"
             }
         ));
         jScrollPane2.setViewportView(tblAllUsers);
@@ -350,6 +347,15 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         jLabel25.setFont(new java.awt.Font("Eras Demi ITC", 0, 22)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(0, 153, 153));
         jLabel25.setText("Account Type:");
+
+        btnSearchAcct1.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
+        btnSearchAcct1.setForeground(new java.awt.Color(0, 153, 153));
+        btnSearchAcct1.setText("Search All");
+        btnSearchAcct1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchAcct1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -381,11 +387,13 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                                         .addGap(118, 118, 118))
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtSearchAcctNo)
+                                            .addComponent(txtSearchAcctNo, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
                                             .addComponent(txtAcctNo)
                                             .addComponent(txtCustomerName))
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnSearchAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addGap(31, 31, 31)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(btnSearchAcct1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(btnSearchAcct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(64, 64, 64)
                         .addComponent(btnOpenAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -395,55 +403,55 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                         .addComponent(btnDeleteAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(43, 43, 43)
+                .addGap(38, 38, 38)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48))
+                .addGap(22, 22, 22))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel9)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSearchAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15)
-                    .addComponent(txtSearchAcctNo, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(txtAcctNo, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11)
-                    .addComponent(txtCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cboSex, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(cboBranch, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cboAccountType, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel25))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(txtInitialBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnOpenAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnModifyAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDeleteAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSearchAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15)
+                            .addComponent(txtSearchAcctNo, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(txtAcctNo, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSearchAcct1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addComponent(txtCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cboSex, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(cboBranch, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(7, 7, 7)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cboAccountType, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel25))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel14)
+                            .addComponent(txtInitialBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnOpenAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnModifyAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDeleteAcct, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Open Account", jPanel3);
@@ -999,6 +1007,9 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                     if (accountType == "Savings") {
                         Account newAccount = new SavingsAccount(acctNo, customerName, sex, branch, accountType, initial_balance1);
                         account.createAccount(newAccount);
+                    }else if (accountType == "Fixed") {
+                        Account newAccount = new FixedAccount(acctNo, customerName, sex, branch, accountType, initial_balance1);
+                        account.createAccount(newAccount);
                     }
 
                     JOptionPane.showMessageDialog(this, "Bank Account has been Created Successfully!", "Banking System - Bank Account Created.", JOptionPane.INFORMATION_MESSAGE);
@@ -1069,7 +1080,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                         Account newAccount = new SavingsAccount(acctNo, customerName, sex, branch, accountType, initial_balance1);
                         account.createAccount(newAccount);
                     }else if (accountType == "Fixed") {
-                        Account newAccount = new SavingsAccount(acctNo, customerName, sex, branch, accountType, initial_balance1);
+                        Account newAccount = new FixedAccount(acctNo, customerName, sex, branch, accountType, initial_balance1);
                         account.createAccount(newAccount);
                     }
                     //Successfully Updated
@@ -1285,7 +1296,6 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                     Transaction newWithdraw = new Transaction(acctNo, customerName, deposit, withdraw, bal);
                     TransactionDAO transaction = new TransactionDAO();
                     transaction.makeTransaction(newWithdraw);
-                    JOptionPane.showMessageDialog(this, "Bank Information has been Deposited Successfully!", "Banking System - Bank Deposited.", JOptionPane.INFORMATION_MESSAGE);
 
                     // Successfully Registered
                     JOptionPane.showMessageDialog(this, "Bank Information has been Withdrawn Successfully!", "Banking System - Bank Registered.", JOptionPane.INFORMATION_MESSAGE);
@@ -1337,6 +1347,11 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     private void txtCustomerName2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomerName2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCustomerName2ActionPerformed
+
+    private void btnSearchAcct1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchAcct1ActionPerformed
+        // TODO add your handling code here:
+        getAllUsers();
+    }//GEN-LAST:event_btnSearchAcct1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1391,6 +1406,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnSearch2;
     private javax.swing.JButton btnSearch4;
     private javax.swing.JButton btnSearchAcct;
+    private javax.swing.JButton btnSearchAcct1;
     private javax.swing.JButton btnViewAll;
     private javax.swing.JComboBox cboAccountType;
     private javax.swing.JComboBox cboBranch;

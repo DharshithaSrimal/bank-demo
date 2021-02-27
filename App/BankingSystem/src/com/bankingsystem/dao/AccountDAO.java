@@ -38,7 +38,7 @@ public class AccountDAO {
     //static final String DATABASE_URL1 = "jdbc:oracle:thin:@localhost:1521:orcl", "gebre", "gebre12";
     static final String DATABASE_URL = "jdbc:mysql://localhost/bank"; //JDBC
 
-    private static final String INSERT_ACCOUNT_SQL = "INSERT INTO tblAccount(acct_no, customer_name, sex, branch, initial_balance) VALUES (? , ?, ?, ?, ?)";
+    private static final String INSERT_ACCOUNT_SQL = "INSERT INTO tblAccount(acct_no, customer_name, sex, branch, account_type, initial_balance) VALUES (? , ?, ?, ?, ?, ?)";
     private static final String SELECT_ACCOUNT_BY_ID = "SELECT * FROM tblAccount WHERE acct_no = ?";
     private static final String SELECT_ALL_ACCOUNTS = "SELECT * FROM tblAccount";
     private static final String DELETE_ACCOUNT_SQL = "delete from users where id = ?;";
