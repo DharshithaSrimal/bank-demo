@@ -124,7 +124,8 @@ public class TransactionDAO {
             System.out.println(preparedStatement);
 
             // Execute the query or update query
-            preparedStatement.executeUpdate();          
+            preparedStatement.executeUpdate();    
+            updateAccount(transaction.getAcctNo(), transaction.getBalance());
 
         } catch (SQLException e) {
             printSQLException(e);
@@ -139,9 +140,9 @@ public class TransactionDAO {
        
             //Update account balance
             PreparedStatement preparedStatement = conn.prepareStatement(UPDATE_ACCOUNT_SQL);
-            preparedStatement.setString(1, acctNo);
-            preparedStatement.setDouble(2, balance);
-            
+            preparedStatement.setDouble(1, balance);
+            preparedStatement.setString(2, acctNo);
+            System.out.println(preparedStatement);
             //Execute the query or update query
             preparedStatement.executeUpdate();
 
