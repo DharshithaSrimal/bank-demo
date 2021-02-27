@@ -15,7 +15,11 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import com.bankingsystem.dao.AccountDAO;
+import com.bankingsystem.dao.TransactionDAO;
 import com.bankingsystem.model.Account;
+import com.bankingsystem.model.Transaction;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -30,7 +34,6 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     Statement statement = null; // Query statement
     PreparedStatement ps; //Prepared statement
     ResultSet rs; //Result set
-    AccountDAO account = new AccountDAO();
     
     /**
      * Creates new form BankInfoSyst
@@ -326,6 +329,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
 
         txtWithAmt1.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
         txtWithAmt1.setForeground(new java.awt.Color(0, 153, 153));
+        txtWithAmt1.setName("depositAmount"); // NOI18N
 
         btnDeposit.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
         btnDeposit.setForeground(new java.awt.Color(0, 153, 153));
@@ -360,6 +364,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
 
         txtSearchAcctNo1.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
         txtSearchAcctNo1.setForeground(new java.awt.Color(0, 153, 153));
+        txtSearchAcctNo1.setName("accNo"); // NOI18N
         txtSearchAcctNo1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSearchAcctNo1ActionPerformed(evt);
@@ -368,9 +373,11 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
 
         txtCurrBal1.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
         txtCurrBal1.setForeground(new java.awt.Color(0, 153, 153));
+        txtCurrBal1.setName("balance"); // NOI18N
 
         txtCustomerName1.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
         txtCustomerName1.setForeground(new java.awt.Color(0, 153, 153));
+        txtCustomerName1.setName("cusName"); // NOI18N
         txtCustomerName1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCustomerName1ActionPerformed(evt);
@@ -780,41 +787,39 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnViewAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewAllActionPerformed
-        // TODO add your handling code here:
-        //ArrayList array = new ArrayList();
+
         DefaultTableModel model = (DefaultTableModel) tblTransactions.getModel();
-        ResultSetMetaData rsmdata;
-        int total = 0;
         try {
-            Class.forName(DRIVER);
-            // Establish conn to database
-            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-            statement = conn.createStatement();
-            String sql = "SELECT acct_no, customer_name, deposit, withdraw, balance, date FROM transactions ORDER BY date DESC";
-            statement.execute(sql);
-            rs = statement.getResultSet();
-            rsmdata = rs.getMetaData();
-            int row = 0;
-            while (rs.next()) {
-                model.setValueAt(rs.getString(1), row, 0);
-                model.setValueAt(rs.getString(2), row, 1);
-                model.setValueAt(rs.getString(3), row, 2);
-                model.setValueAt(rs.getString(4), row, 3);
-                model.setValueAt(rs.getString(5), row, 4);
-                model.setValueAt(rs.getString(6), row, 5);
-                row++;
-                total = row;
-            }
-            rs.close();
-            statement.close();
-            String tot = String.valueOf(total);
-            lblTotal.setText(tot);
-            if (total == 0) {
-                JOptionPane.showMessageDialog(this, "There are No Records in the Database!", "Banking System - No Record Found.", JOptionPane.INFORMATION_MESSAGE);
+            String acctNo = txtSearchAcctNo3.getText();
+            int total = 0;
+            if (acctNo.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Enter Bank Account Number to Search!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+     
+                int rows = 0;
+                TransactionDAO transaction= new TransactionDAO();
+                List<Transaction> accountTransaction = transaction.viewAllTransactions();
+                //System.out.println();
+                while (accountTransaction.size() > rows ) {
+                    model.setValueAt(accountTransaction.get(rows).getAcctNo(), rows, 0);
+                    model.setValueAt(accountTransaction.get(rows).getCustomerName(), rows, 1);
+                    model.setValueAt(accountTransaction.get(rows).getDeposit(), rows, 2);
+                    model.setValueAt(accountTransaction.get(rows).getWithdraw(), rows, 3);
+                    model.setValueAt(accountTransaction.get(rows).getBalance(), rows, 4);
+                    model.setValueAt(accountTransaction.get(rows).getDate(), rows, 5);
+                    rows++;
+                    total = rows;
+                    
+                }
+                String tot = String.valueOf(rows);
+                lblTotal.setText(tot);
+                
+                if (total == 0) {
+                    JOptionPane.showMessageDialog(this, "No Record Found Matching Your Search Criteria " + acctNo + "", "Banking System - No Record Found.", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error! Can't Connect be to Database! Please Contact System Administrator.", "Banking System - Connection Error.", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_btnViewAllActionPerformed
 
@@ -834,7 +839,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             if (acctNo.isEmpty() || customerName.isEmpty() || se == 0 || br == 0 || initial_balance.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Fill in All Required Information!", "Banking SYstem - Required Information.", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                
+                AccountDAO account = new AccountDAO();
                 Account existingcount = account.selectAccount(acctNo);
                 double initial_balance1 = Double.parseDouble(initial_balance);
                 
@@ -858,24 +863,22 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnOpenAcctActionPerformed
 
     private void btnSearchAcctActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchAcctActionPerformed
-        // TODO add your handling code here:
-        ArrayList array = new ArrayList();
+
         try {
             String acctNo = txtSearchAcctNo.getText();
 
             if (acctNo.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter Bank Account Number to Search!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
             } else {
+                AccountDAO account = new AccountDAO();
+                Account existingAccount = account.selectAccount(acctNo);
                 
-                AccountDAO existingAccount = existingAccount = new AccountDAO();
-                Account account = existingAccount.selectAccount(acctNo);
-                
-                if (account != null ) {
-                    txtAcctNo.setText(account.getAcctNo());
-                    txtCustomerName.setText(account.getCustomerName());
-                    cboSex.setSelectedItem(account.getSex());
-                    cboBranch.setSelectedItem(account.getBranch());
-                    txtInitialBalance.setText(String.valueOf(account.getInitialBalance()));
+                if (existingAccount != null ) {
+                    txtAcctNo.setText(existingAccount.getAcctNo());
+                    txtCustomerName.setText(existingAccount.getCustomerName());
+                    cboSex.setSelectedItem(existingAccount.getSex());
+                    cboBranch.setSelectedItem(existingAccount.getBranch());
+                    txtInitialBalance.setText(String.valueOf(existingAccount.getInitialBalance()));
                 } else {
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + txtSearchAcctNo.getText() + " Not Found!", "Banking System - Bank Not Found", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -902,6 +905,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Please Fill in All Required Information!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 double initial_balance1 = Double.parseDouble(initial_balance);
+                AccountDAO account = new AccountDAO();
                 Account existingcount = account.selectAccount(acctNo);
                         
                 if (existingcount != null ) {
@@ -973,39 +977,32 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
 
     private void btnSearch2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearch2ActionPerformed
         // TODO add your handling code here:
-        ArrayList array = new ArrayList();
-
         DefaultTableModel model = (DefaultTableModel) tblTransactions.getModel();
-        ResultSetMetaData rsmd;
         try {
             String acctNo = txtSearchAcctNo3.getText();
             int total = 0;
             if (acctNo.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter Bank Account Number to Search!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                for (int i = 0; i < 5; i++) {
-                    Class.forName(DRIVER);
-                    // establish conn to database
-                    conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-                    statement = conn.createStatement();
-                    String sql = "SELECT acct_no, customer_name, deposit, withdraw, balance, date FROM transactions WHERE acct_no = '" + acctNo + "'";
-                    statement.execute(sql);
-                    rs = statement.getResultSet();
-                    rsmd = rs.getMetaData();
-                    int rows = 0;
-                    while (rs.next()) {
-                        model.setValueAt(rs.getString(1), rows, 0);
-                        model.setValueAt(rs.getString(2), rows, 1);
-                        model.setValueAt(rs.getString(3), rows, 2);
-                        model.setValueAt(rs.getString(4), rows, 3);
-                        model.setValueAt(rs.getString(5), rows, 4);
-                        model.setValueAt(rs.getString(6), rows, 5);
-                        rows++;
-                        total = rows;
-                    }
-                    String tot = String.valueOf(rows);
-                    lblTotal.setText(tot);
+     
+                int rows = 0;
+                TransactionDAO transaction= new TransactionDAO();
+                List<Transaction> accountTransaction = transaction.selectTransactionsById(acctNo);
+                //System.out.println();
+                while (accountTransaction.size() > rows ) {
+                    model.setValueAt(accountTransaction.get(rows).getAcctNo(), rows, 0);
+                    model.setValueAt(accountTransaction.get(rows).getCustomerName(), rows, 1);
+                    model.setValueAt(accountTransaction.get(rows).getDeposit(), rows, 2);
+                    model.setValueAt(accountTransaction.get(rows).getWithdraw(), rows, 3);
+                    model.setValueAt(accountTransaction.get(rows).getBalance(), rows, 4);
+                    model.setValueAt(accountTransaction.get(rows).getDate(), rows, 5);
+                    rows++;
+                    total = rows;
+                    
                 }
+                String tot = String.valueOf(rows);
+                lblTotal.setText(tot);
+                
                 if (total == 0) {
                     JOptionPane.showMessageDialog(this, "No Record Found Matching Your Search Criteria " + acctNo + "", "Banking System - No Record Found.", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -1032,26 +1029,31 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 statement = conn.createStatement();
                 double currbal1 = Double.parseDouble(currbal);
                 double deposit = Double.parseDouble(amount);
-
                 double bal = currbal1 + deposit; //deposit
                 double withdraw = 0;
-
-                String query = "SELECT *FROM tblAccount WHERE acct_no ='" + acctNo + "'";
-                ps = (PreparedStatement) conn.prepareStatement(query);
-                rs = ps.executeQuery();
-                while (rs.next()) {
-                    AcctNumber = rs.getString("acct_no");
+                Date date = new Date();  
+                
+                AccountDAO account = new AccountDAO();
+                Account existingAccount = account.selectAccount(acctNo);
+               
+                if (existingAccount != null) {
+                    AcctNumber = existingAccount.getAcctNo();
                 }
+                
                 if (!acctNo.intern().equals(AcctNumber.intern())) {
                     //Info Already Exist (Must Not Insert Duplicate Info)
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + acctNo + " Already Exist!", "Banking System - Bank Already Exist.", JOptionPane.INFORMATION_MESSAGE);
                 } else if (acctNo.intern().equals(AcctNumber.intern())) {
-                    statement = conn.createStatement();
+                    
+                    /*statement = conn.createStatement();
                     String sql = "INSERT INTO transactions(acct_no, customer_name, deposit, withdraw, balance, date) VALUES ('" + acctNo + "' , '" + customerName + "', '" + deposit + "', '" + withdraw + "','" + bal + "', CURDATE())";
                     statement.executeUpdate(sql);
                     ps = (PreparedStatement) conn.prepareStatement("UPDATE  tblAccount SET initial_balance ='" + bal + "' WHERE acct_no ='" + acctNo + "'");
-                    ps.executeUpdate();
+                    ps.executeUpdate();*/
                     // Successfully Registered
+                    Transaction newDeposit = new Transaction(acctNo, customerName, deposit, withdraw, bal);
+                    TransactionDAO transaction = new TransactionDAO();
+                    transaction.makeTransaction(newDeposit);
                     JOptionPane.showMessageDialog(this, "Bank Information has been Deposited Successfully!", "Banking System - Bank Deposited.", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -1067,32 +1069,23 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
 
     private void btnSearch1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearch1ActionPerformed
         // TODO add your handling code here:
-        ArrayList array = new ArrayList();
         try {
             String acctNo = txtSearchAcctNo1.getText();
 
             if (acctNo.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter Bank Account Number to Search!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                Class.forName(DRIVER);
-                // Establish conn to database
-                conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-                statement = conn.createStatement();
-                String sql = "SELECT * FROM tblAccount WHERE acct_no='" + acctNo + "'";
-                rs = statement.executeQuery(sql);
-                while (rs.next()) {
-                    // Add 5 elements to the array list
-                    for (int i = 0; i < 5; i++) {
-                        array.add(rs.getString(i + 1));
-                    }
+                AccountDAO account = new AccountDAO();
+                Account existingAccount = account.selectAccount(acctNo);
+               
+                if (existingAccount != null) {
+                    txtSearchAcctNo1.setText(existingAccount.getAcctNo());
+                    txtCustomerName1.setText(existingAccount.getCustomerName());
+                    txtCurrBal1.setText(String.valueOf(existingAccount.getInitialBalance()));
                 }
-                /*if (!array.isEmpty()) {
-                    txtSearchAcctNo1.setText(array.get(0).toString());
-                    txtCustomerName1.setText(array.get(1).toString());
-                    txtCurrBal1.setText(array.get(4).toString());
-                } else {
+                else {
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + txtSearchAcctNo.getText() + " Not Found!", "Banking System - Bank Not Found", JOptionPane.INFORMATION_MESSAGE);
-                }*/
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error! Can't Connect be to Database! Please Contact System Administrator.", "Banking System - Connection Error.", JOptionPane.ERROR_MESSAGE);

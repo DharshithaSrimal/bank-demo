@@ -5,21 +5,24 @@
  */
 package com.bankingsystem.dao;
 
+import static com.bankingsystem.dao.AccountDAO.DRIVER;
 import com.bankingsystem.model.Account;
+import com.bankingsystem.model.Transaction;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author DHARSHITHA
  */
-public class AccountDAO {
+public class TransactionDAO {
 
     static final String jdbcDriver = "com.mysql.jdbc.Driver"; //Driver
     //static final String DATABASE_URL1 = "jdbc:oracle:thin:@localhost:1521:orcl", "gebre", "gebre12";
@@ -36,34 +39,22 @@ public class AccountDAO {
     static final String DATABASE_URL = "jdbc:mysql://localhost/bank"; //JDBC
 
     private static final String INSERT_ACCOUNT_SQL = "INSERT INTO tblAccount(acct_no, customer_name, sex, branch, initial_balance) VALUES (? , ?, ?, ?, ?)";
-    private static final String SELECT_ACCOUNT_BY_ID = "SELECT * FROM tblAccount WHERE acct_no = ?";
-    private static final String SELECT_ALL_ACCOUNTS = "SELECT acct_no, customer_name, deposit, withdraw, balance, date FROM transactions ORDER BY date DESC";
+    private static final String SELECT_TRANSACTION_BY_ID = "SELECT * FROM transactions WHERE acct_no = ? ORDER BY date DESC";
+    private static final String SELECT_ALL_TRANSACTIONS = "SELECT * FROM transactions ORDER BY date DESC";
     private static final String DELETE_ACCOUNT_SQL = "delete from users where id = ?;";
-    private static final String UPDATE_ACCOUNT_SQL = "UPDATE  tblAccount SET customer_name = ?,  sex = ?, branch = ?, initial_balance = ? WHERE acct_no = ?";
+    private static final String UPDATE_ACCOUNT_SQL = "UPDATE  tblAccount SET initial_balance = ? WHERE acct_no = ?";
+    private static final String DEPOSIT_MONEY_SQL = "INSERT INTO transactions (acct_no, customer_name, deposit,withdraw, balance, date) VALUES(?, ?, ?, ?, ?, CURDATE())";
+    
+    public List<Transaction> selectTransactionsById(String selectedAccount) throws ClassNotFoundException {
 
-    protected Connection getConnection() {
-        Connection connection = null;
-        try {
-            Class.forName("jdbcDriver");
-            connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return connection;
-    }
-
-    //View account by ID
-    public Account selectAccount(String selectedAccount) throws ClassNotFoundException {
-
-        Account account = null;
+        ArrayList<Transaction> transactions;
+        transactions = new ArrayList<Transaction>();
         try {
 
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(DATABASE_URL, "root", "");
             statement = conn.createStatement();
-            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ACCOUNT_BY_ID);
+            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_TRANSACTION_BY_ID);
             preparedStatement.setString(1, selectedAccount);
             System.out.println(preparedStatement);
             // Execute the query or update query
@@ -73,81 +64,92 @@ public class AccountDAO {
             while (rs.next()) {
                 String accountNo = rs.getString("acct_no");
                 String customerName = rs.getString("customer_name");
-                String sex = rs.getString("sex");
-                String branch = rs.getString("branch");
-                double initialBalance = rs.getDouble("initial_balance");
-                account = new Account(accountNo, customerName, sex, branch, initialBalance);
+                double deposit = rs.getDouble("deposit");
+                double withdraw = rs.getDouble("withdraw");
+                double balance = rs.getDouble("balance");
+                Date date = rs.getDate("date");
+                transactions.add(new Transaction(accountNo, customerName, deposit, withdraw, balance, date));
+               
             }
         } catch (SQLException e) {
             printSQLException(e);
         }
-        return account;
+        return transactions;
     }
+    
+    public List<Transaction> viewAllTransactions() throws ClassNotFoundException {
 
-    //Create account
-    public void createAccount(Account account) throws ClassNotFoundException {
-
+        ArrayList<Transaction> transactions;
+        transactions = new ArrayList<Transaction>();
         try {
+
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(DATABASE_URL, "root", "");
             statement = conn.createStatement();
-            PreparedStatement preparedStatement = conn.prepareStatement(INSERT_ACCOUNT_SQL);
-            preparedStatement.setString(1, account.getAcctNo());
-            preparedStatement.setString(2, account.getCustomerName());
-            preparedStatement.setString(3, account.getSex());
-            preparedStatement.setString(4, account.getBranch());
-            preparedStatement.setDouble(5, account.getInitialBalance());
+            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ALL_TRANSACTIONS);
             System.out.println(preparedStatement);
             // Execute the query or update query
-            preparedStatement.executeUpdate();
+            ResultSet rs = preparedStatement.executeQuery();
+
+            // Process the ResultSet object.
+            while (rs.next()) {
+                String accountNo = rs.getString("acct_no");
+                String customerName = rs.getString("customer_name");
+                double deposit = rs.getDouble("deposit");
+                double withdraw = rs.getDouble("withdraw");
+                double balance = rs.getDouble("balance");
+                Date date = rs.getDate("date");
+                transactions.add(new Transaction(accountNo, customerName, deposit, withdraw, balance, date));
+               
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return transactions;
+    }
+   
+    public void makeTransaction(Transaction transaction) throws ClassNotFoundException{
+    try {
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
+            statement = conn.createStatement();
+            //Insert transaction data
+            PreparedStatement preparedStatement = conn.prepareStatement(DEPOSIT_MONEY_SQL);
+            preparedStatement.setString(1, transaction.getAcctNo());
+            preparedStatement.setString(2, transaction.getCustomerName());
+            preparedStatement.setDouble(3, transaction.getDeposit());
+            preparedStatement.setDouble(4, transaction.getWithdraw());
+            preparedStatement.setDouble(5, transaction.getBalance());
+            //preparedStatement.setDate(6, (java.sql.Date) transaction.getDate());
+            System.out.println(preparedStatement);
+
+            // Execute the query or update query
+            preparedStatement.executeUpdate();          
 
         } catch (SQLException e) {
             printSQLException(e);
         }
     }
-
-    //Update account
-    public void updateAccount(Account account) throws ClassNotFoundException {
-        try {
+    
+    public void updateAccount(String acctNo, double balance) throws ClassNotFoundException{
+     try {
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(DATABASE_URL, "root", "");
             statement = conn.createStatement();
+       
+            //Update account balance
             PreparedStatement preparedStatement = conn.prepareStatement(UPDATE_ACCOUNT_SQL);
-            preparedStatement.setString(1, account.getCustomerName());
-            preparedStatement.setString(2, account.getSex());
-            preparedStatement.setString(3, account.getBranch());
-            preparedStatement.setDouble(4, account.getInitialBalance());
-            preparedStatement.setString(5, account.getAcctNo());
-            System.out.println(preparedStatement);
-
-            // Execute the query or update query
+            preparedStatement.setString(1, acctNo);
+            preparedStatement.setDouble(2, balance);
+            
+            //Execute the query or update query
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             printSQLException(e);
         }
     }
-
-    //Delete account
-    public boolean deleteAccount(String accountNo) throws ClassNotFoundException {
-        boolean rowDeleted = false;
-        try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-            statement = conn.createStatement();
-            PreparedStatement preparedStatement = conn.prepareStatement(DELETE_ACCOUNT_SQL);
-            preparedStatement.setString(1, accountNo);
-
-            System.out.println(preparedStatement);
-            // Execute the query or update query
-            rowDeleted = preparedStatement.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-        return rowDeleted;
-    }
-
+    
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {
             if (e instanceof SQLException) {
