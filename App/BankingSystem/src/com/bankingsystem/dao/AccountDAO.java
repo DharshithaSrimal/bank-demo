@@ -41,7 +41,7 @@ public class AccountDAO {
     private static final String INSERT_ACCOUNT_SQL = "INSERT INTO tblAccount(acct_no, customer_name, sex, branch, account_type, initial_balance) VALUES (? , ?, ?, ?, ?, ?)";
     private static final String SELECT_ACCOUNT_BY_ID = "SELECT * FROM tblAccount WHERE acct_no = ?";
     private static final String SELECT_ALL_ACCOUNTS = "SELECT * FROM tblAccount";
-    private static final String DELETE_ACCOUNT_SQL = "delete from users where id = ?;";
+    private static final String DELETE_ACCOUNT_SQL = "delete from users where id = ?";
     private static final String UPDATE_ACCOUNT_SQL = "UPDATE  tblAccount SET customer_name = ?,  sex = ?, branch = ?, initial_balance = ? WHERE acct_no = ?";
 
     protected Connection getConnection() {

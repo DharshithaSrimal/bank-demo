@@ -16,12 +16,16 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import com.bankingsystem.dao.AccountDAO;
 import com.bankingsystem.dao.TransactionDAO;
+import com.bankingsystem.dao.UserDAO;
 import com.bankingsystem.model.Account;
 import com.bankingsystem.model.FixedAccount;
 import com.bankingsystem.model.SavingsAccount;
 import com.bankingsystem.model.Transaction;
+import com.bankingsystem.model.User;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -49,7 +53,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         txtCurrBal1.setEditable(false);
         txtCustomerName2.setEditable(false);
         txtCurrBal2.setEditable(false);
-     
+
     }
 
     public ApplicationMainMenu(String userType) {
@@ -65,11 +69,12 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         if (userType == "Cashier") {
             btnOpenAcct.setVisible(false);
             btnDeleteAcct.setVisible(false);
+            jPanelCashier.setVisible(false);
         } else if (userType == "Manager") {
             btnOpenAcct.setVisible(true);
             btnDeleteAcct.setVisible(true);
         }
-        
+
     }
 
     public void getAllUsers() {
@@ -107,7 +112,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jTabcashier = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -168,15 +173,29 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         tblTransactions = new javax.swing.JTable();
         jLabel24 = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
+        jPanelCashier = new javax.swing.JPanel();
+        txtUser = new javax.swing.JTextField();
+        txtUserPw = new javax.swing.JPasswordField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        txtSearchUser = new javax.swing.JTextField();
+        btnSearchAcct2 = new javax.swing.JButton();
+        btnSearchAcct3 = new javax.swing.JButton();
+        btnSearchAcct4 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblAllUsers1 = new javax.swing.JTable();
         jLabel16 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(102, 153, 255));
 
-        jTabbedPane1.setBackground(new java.awt.Color(204, 204, 204));
-        jTabbedPane1.setForeground(new java.awt.Color(0, 102, 102));
-        jTabbedPane1.setFont(new java.awt.Font("Eras Demi ITC", 1, 26)); // NOI18N
+        jTabcashier.setBackground(new java.awt.Color(204, 204, 204));
+        jTabcashier.setForeground(new java.awt.Color(0, 102, 102));
+        jTabcashier.setFont(new java.awt.Font("Eras Demi ITC", 1, 26)); // NOI18N
 
         jPanel3.setName("initialBalance"); // NOI18N
 
@@ -339,6 +358,12 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             }
         ));
         jScrollPane2.setViewportView(tblAllUsers);
+        if (tblAllUsers.getColumnModel().getColumnCount() > 0) {
+            tblAllUsers.getColumnModel().getColumn(2).setResizable(false);
+            tblAllUsers.getColumnModel().getColumn(3).setHeaderValue("Account Type");
+            tblAllUsers.getColumnModel().getColumn(4).setResizable(false);
+            tblAllUsers.getColumnModel().getColumn(4).setHeaderValue("Current Balance");
+        }
 
         cboAccountType.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
         cboAccountType.setForeground(new java.awt.Color(0, 153, 153));
@@ -387,7 +412,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                                         .addGap(118, 118, 118))
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtSearchAcctNo, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                                            .addComponent(txtSearchAcctNo, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                                             .addComponent(txtAcctNo)
                                             .addComponent(txtCustomerName))
                                         .addGap(31, 31, 31)
@@ -454,7 +479,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Open Account", jPanel3);
+        jTabcashier.addTab("Open Account", jPanel3);
 
         jLabel18.setFont(new java.awt.Font("Eras Bold ITC", 0, 36)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(0, 153, 153));
@@ -538,15 +563,15 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 .addComponent(jLabel26)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
                         .addComponent(jLabel18)
-                        .addGap(0, 640, Short.MAX_VALUE))
+                        .addGap(0, 652, Short.MAX_VALUE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtSearchAcctNo1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(527, Short.MAX_VALUE))))
+                        .addContainerGap(620, Short.MAX_VALUE))))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -601,7 +626,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 .addContainerGap(131, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Deposit Money", jPanel5);
+        jTabcashier.addTab("Deposit Money", jPanel5);
 
         jLabel27.setFont(new java.awt.Font("Eras Demi ITC", 1, 36)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(0, 153, 153));
@@ -704,7 +729,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                         .addComponent(txtSearchAcctNo2, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSearch4, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(605, Short.MAX_VALUE))
+                .addContainerGap(630, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -735,7 +760,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 .addContainerGap(110, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Withdraw Money", jPanel6);
+        jTabcashier.addTab("Withdraw Money", jPanel6);
 
         jLabel17.setFont(new java.awt.Font("Eras Demi ITC", 0, 36)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(0, 153, 153));
@@ -863,7 +888,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(btnSearch2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGap(135, 135, 135))))
-                .addContainerGap(243, Short.MAX_VALUE))
+                .addContainerGap(268, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -885,7 +910,192 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 .addGap(27, 27, 27))
         );
 
-        jTabbedPane1.addTab("Bank Transactions", jPanel4);
+        jTabcashier.addTab("Bank Transactions", jPanel4);
+
+        jButton1.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 153, 153));
+        jButton1.setText("Create");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(0, 153, 153));
+        jButton2.setText("Modify");
+
+        jLabel28.setFont(new java.awt.Font("Eras Demi ITC", 0, 22)); // NOI18N
+        jLabel28.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel28.setText("Enter Password:");
+
+        jLabel29.setFont(new java.awt.Font("Eras Demi ITC", 0, 22)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel29.setText("Enter Username:");
+
+        jLabel30.setFont(new java.awt.Font("Eras Demi ITC", 0, 22)); // NOI18N
+        jLabel30.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel30.setText("Search Username:");
+
+        btnSearchAcct2.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
+        btnSearchAcct2.setForeground(new java.awt.Color(0, 153, 153));
+        btnSearchAcct2.setText("Search All");
+        btnSearchAcct2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchAcct2ActionPerformed(evt);
+            }
+        });
+
+        btnSearchAcct3.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
+        btnSearchAcct3.setForeground(new java.awt.Color(0, 153, 153));
+        btnSearchAcct3.setText("Search");
+        btnSearchAcct3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchAcct3ActionPerformed(evt);
+            }
+        });
+
+        btnSearchAcct4.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
+        btnSearchAcct4.setForeground(new java.awt.Color(0, 153, 153));
+        btnSearchAcct4.setText("Delete");
+        btnSearchAcct4.setPreferredSize(new java.awt.Dimension(143, 37));
+        btnSearchAcct4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchAcct4ActionPerformed(evt);
+            }
+        });
+
+        tblAllUsers1.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        tblAllUsers1.setForeground(new java.awt.Color(0, 153, 153));
+        tblAllUsers1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Id", "Username", "Role"
+            }
+        ));
+        jScrollPane3.setViewportView(tblAllUsers1);
+        if (tblAllUsers1.getColumnModel().getColumnCount() > 0) {
+            tblAllUsers1.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanelCashierLayout = new javax.swing.GroupLayout(jPanelCashier);
+        jPanelCashier.setLayout(jPanelCashierLayout);
+        jPanelCashierLayout.setHorizontalGroup(
+            jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelCashierLayout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addGroup(jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel30)
+                    .addComponent(jLabel28)
+                    .addComponent(jLabel29))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtSearchUser, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelCashierLayout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addComponent(txtUserPw, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
+                .addGroup(jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelCashierLayout.createSequentialGroup()
+                        .addGroup(jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSearchAcct2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSearchAcct3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(36, 36, 36))
+                    .addGroup(jPanelCashierLayout.createSequentialGroup()
+                        .addComponent(btnSearchAcct4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(61, 61, 61))
+        );
+        jPanelCashierLayout.setVerticalGroup(
+            jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelCashierLayout.createSequentialGroup()
+                .addGap(93, 93, 93)
+                .addGroup(jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelCashierLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanelCashierLayout.createSequentialGroup()
+                        .addGroup(jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelCashierLayout.createSequentialGroup()
+                                .addGroup(jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel30)
+                                    .addComponent(txtSearchUser, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(30, 30, 30)
+                                .addGroup(jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel29))
+                                .addGap(31, 31, 31)
+                                .addGroup(jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtUserPw, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel28))
+                                .addGap(33, 33, 33)
+                                .addGroup(jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButton1)
+                                    .addComponent(jButton2)
+                                    .addComponent(btnSearchAcct4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanelCashierLayout.createSequentialGroup()
+                                .addComponent(btnSearchAcct3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSearchAcct2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+
+        jTabcashier.addTab("Cashier Accounts", jPanelCashier);
 
         jLabel16.setFont(new java.awt.Font("Eras Medium ITC", 1, 60)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
@@ -895,13 +1105,14 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(247, 247, 247)
-                .addComponent(jLabel16)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(247, 247, 247)
+                        .addComponent(jLabel16))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jTabcashier, javax.swing.GroupLayout.PREFERRED_SIZE, 1222, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -910,7 +1121,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTabcashier, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -1007,7 +1218,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                     if (accountType == "Savings") {
                         Account newAccount = new SavingsAccount(acctNo, customerName, sex, branch, accountType, initial_balance1);
                         account.createAccount(newAccount);
-                    }else if (accountType == "Fixed") {
+                    } else if (accountType == "Fixed") {
                         Account newAccount = new FixedAccount(acctNo, customerName, sex, branch, accountType, initial_balance1);
                         account.createAccount(newAccount);
                     }
@@ -1079,7 +1290,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                     if (accountType == "Savings") {
                         Account newAccount = new SavingsAccount(acctNo, customerName, sex, branch, accountType, initial_balance1);
                         account.createAccount(newAccount);
-                    }else if (accountType == "Fixed") {
+                    } else if (accountType == "Fixed") {
                         Account newAccount = new FixedAccount(acctNo, customerName, sex, branch, accountType, initial_balance1);
                         account.createAccount(newAccount);
                     }
@@ -1353,6 +1564,113 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         getAllUsers();
     }//GEN-LAST:event_btnSearchAcct1ActionPerformed
 
+    private void btnSearchAcct2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchAcct2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSearchAcct2ActionPerformed
+
+    private void btnSearchAcct3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchAcct3ActionPerformed
+        try {
+            String userSearch = txtSearchUser.getText();
+
+            if (userSearch.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Enter Username Number to Search!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                UserDAO user = new UserDAO();
+                User existingUser = user.selectAccount(userSearch);
+
+                if (existingUser != null) {
+                    txtUser.setText(existingUser.getUsername());
+                    txtUserPw.setText(existingUser.getPassword());
+                } else {
+                    JOptionPane.showMessageDialog(this, "Cashier Account With Username " + txtSearchUser.getText() + " Not Found!", "Banking System - Cashier Account Not Found", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error! Can't Connect be to Database! Please Contact System Administrator.", "Banking System - Connection Error.", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnSearchAcct3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String un = "";
+        String username = txtUser.getText();
+        String password = String.valueOf(txtUserPw.getPassword());
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Fill in All Required Information!", "Banking SYstem - Required Information.", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            UserDAO user = new UserDAO();
+            User existinguser = null;
+            try {
+                existinguser = user.selectAccount(username);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ApplicationMainMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            if (existinguser != null) {
+                un = existinguser.getUsername();
+            }
+            if (un.intern().equals(username.intern())) {
+                //Info Already Exist (Must Not Insert Duplicate Info)
+                JOptionPane.showMessageDialog(this, "Cashier Account With Username " + username + " Already Exist!", "Banking System - Cashier Account Already Exist.", JOptionPane.INFORMATION_MESSAGE);
+            } else if (!un.intern().equals(username.intern())) {
+
+                User newUser = new User(username, password);
+                try {
+                    user.createUser(newUser);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(ApplicationMainMenu.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                JOptionPane.showMessageDialog(this, "Cashier account has been Created Successfully!", "Banking System - Bank Account Created.", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnSearchAcct4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchAcct4ActionPerformed
+        try {
+            String un = "";
+            String cashierAcc = txtUser.getText();
+            String acctNo1 = txtAcctNo.getText();
+
+            if (cashierAcc.isEmpty() && acctNo1.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Enter Username to Delete!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                //Show a Confirmation Dialog.
+                int reply = JOptionPane.showConfirmDialog(this,
+                        "Are you Sure You Want to Delete the Bank Information With Account Number " + cashierAcc + " from the Database?",
+                        "Banking System - Confirm Deletion?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                //Check the User Selection.
+                if (reply == JOptionPane.YES_OPTION) {
+
+                    UserDAO user = new UserDAO();
+                    User existinguser = null;
+                    try {
+                        existinguser = user.selectAccount(cashierAcc);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(ApplicationMainMenu.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    if (existinguser != null) {
+                        un = existinguser.getUsername();
+                    }
+                    if (!cashierAcc.intern().equals(un.intern())) {
+                        //Stud Info Not Found
+                        JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + cashierAcc + " Doesn't Exist!", "Banking System - Bank Doesn't Exist.", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (cashierAcc.intern().equals(un.intern())) {
+                       //User newUser = new User();
+                       user.deleteAccount(un);
+                        //Bank Successfully Deleted
+                        JOptionPane.showMessageDialog(this, "Bank Information has been Deleted Successfully!", "Banking System - Bank Deleted.", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else if (reply == JOptionPane.NO_OPTION) {
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error! Can't Connect be to Database! Please Contact System Administrator.", "Banking System - Connection Error.", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnSearchAcct4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1407,10 +1725,15 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnSearch4;
     private javax.swing.JButton btnSearchAcct;
     private javax.swing.JButton btnSearchAcct1;
+    private javax.swing.JButton btnSearchAcct2;
+    private javax.swing.JButton btnSearchAcct3;
+    private javax.swing.JButton btnSearchAcct4;
     private javax.swing.JButton btnViewAll;
     private javax.swing.JComboBox cboAccountType;
     private javax.swing.JComboBox cboBranch;
     private javax.swing.JComboBox cboSex;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1429,6 +1752,9 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
@@ -1438,11 +1764,14 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanelCashier;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabcashier;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JTable tblAllUsers;
+    private javax.swing.JTable tblAllUsers1;
     private javax.swing.JTable tblTransactions;
     private javax.swing.JTextField txtAcctNo;
     private javax.swing.JTextField txtCurrBal1;
@@ -1455,6 +1784,9 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     private javax.swing.JTextField txtSearchAcctNo1;
     private javax.swing.JTextField txtSearchAcctNo2;
     private javax.swing.JTextField txtSearchAcctNo3;
+    private javax.swing.JTextField txtSearchUser;
+    private javax.swing.JTextField txtUser;
+    private javax.swing.JPasswordField txtUserPw;
     private javax.swing.JTextField txtWithAmt1;
     private javax.swing.JTextField txtWithAmt2;
     // End of variables declaration//GEN-END:variables
