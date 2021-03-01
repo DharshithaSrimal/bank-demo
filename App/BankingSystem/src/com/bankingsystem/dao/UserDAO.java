@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -32,8 +33,9 @@ public class UserDAO {
     static final String DATABASE_URL = "jdbc:mysql://localhost/bank"; //JDBC
     private static final String INSERT_USER_SQL = "INSERT INTO user(username, password, role) VALUES (? , ?, ?)";
     private static final String SELECT_USER_BY_USERNAME = "SELECT * FROM user WHERE username = ?";
-     private static final String DELETE_USER_SQL = "delete from user where username = ?;";
-   
+    private static final String DELETE_USER_SQL = "delete from user where username = ?;";
+    private static final String UPDATE_CASHIER_SQL = "UPDATE user SET username = ?,  password = ? WHERE id = ?";
+    private static final String SELECT_ALL_USERS = "SELECT id, username, role FROM user";
 
     public String checkPassword(String username, String password) throws ClassNotFoundException, SQLException {
         String role = "";
@@ -98,7 +100,8 @@ public class UserDAO {
                 String un = rs.getString("username");
                 String pw = rs.getString("password");
                 String role = rs.getString("role");
-                user = new User(username, pw, role);
+                int id = rs.getInt("id");
+                user = new User(id, username, pw, role);
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -124,6 +127,54 @@ public class UserDAO {
             printSQLException(e);
         }
         return rowDeleted;
+    }
+     //Update account
+    public void updateCashier(User cashier) throws ClassNotFoundException {
+        try {
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
+            statement = conn.createStatement();
+            PreparedStatement preparedStatement = conn.prepareStatement(UPDATE_CASHIER_SQL);
+            preparedStatement.setString(1, cashier.getUsername());
+            preparedStatement.setString(2, cashier.getPassword());
+            preparedStatement.setInt(3, cashier.getId());
+            System.out.println(preparedStatement);
+
+            // Execute the query or update query
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+    
+     //View aall accounts
+    public ArrayList<User> viewAllUsers() throws ClassNotFoundException {
+
+        ArrayList<User> users;
+        users = new ArrayList<User>();
+        try {
+
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
+            statement = conn.createStatement();
+            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ALL_USERS);
+            System.out.println(preparedStatement);
+            // Execute the query or update query
+            ResultSet rs = preparedStatement.executeQuery();
+
+            // Process the ResultSet object.
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String username = rs.getString("username");
+                String role = rs.getString("role");
+
+                users.add(new User(id, username, role ));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return users;
     }
     
     private void printSQLException(SQLException ex) {

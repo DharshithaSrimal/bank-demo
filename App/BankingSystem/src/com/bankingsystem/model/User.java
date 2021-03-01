@@ -10,12 +10,21 @@ package com.bankingsystem.model;
  * @author DHARSHITHA
  */
 public class User {
+    private int id;
     private String username;
     private String password;
     private String role;
 
     public User() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public int getId() {
+        return id;
     }
 
     public void setUsername(String username) {
@@ -49,6 +58,17 @@ public class User {
     }
     
     public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+    
+    public User(int id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
+    public User(int id, String username, String password, String role) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.role = role;

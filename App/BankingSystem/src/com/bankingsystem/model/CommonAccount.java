@@ -13,4 +13,5 @@ public class CommonAccount extends Account {
     public CommonAccount(String acctNo, String customerName, String sex, String branch, String accountType, double initialBalance) {
 	super(acctNo, customerName, sex, branch, accountType, initialBalance);
     }
+
 }

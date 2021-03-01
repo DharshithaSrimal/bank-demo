@@ -70,6 +70,9 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             btnOpenAcct.setVisible(false);
             btnDeleteAcct.setVisible(false);
             jPanelCashier.setVisible(false);
+            btnCreateUser.setVisible(false);
+            btnDeleteUser.setVisible(false);
+            btnModifyUser.setVisible(false);
         } else if (userType == "Manager") {
             btnOpenAcct.setVisible(true);
             btnDeleteAcct.setVisible(true);
@@ -176,15 +179,15 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         jPanelCashier = new javax.swing.JPanel();
         txtUser = new javax.swing.JTextField();
         txtUserPw = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnCreateUser = new javax.swing.JButton();
+        btnModifyUser = new javax.swing.JButton();
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         txtSearchUser = new javax.swing.JTextField();
         btnSearchAcct2 = new javax.swing.JButton();
         btnSearchAcct3 = new javax.swing.JButton();
-        btnSearchAcct4 = new javax.swing.JButton();
+        btnDeleteUser = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblAllUsers1 = new javax.swing.JTable();
         jLabel16 = new javax.swing.JLabel();
@@ -912,18 +915,23 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
 
         jTabcashier.addTab("Bank Transactions", jPanel4);
 
-        jButton1.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 153, 153));
-        jButton1.setText("Create");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCreateUser.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
+        btnCreateUser.setForeground(new java.awt.Color(0, 153, 153));
+        btnCreateUser.setText("Create");
+        btnCreateUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCreateUserActionPerformed(evt);
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 153, 153));
-        jButton2.setText("Modify");
+        btnModifyUser.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
+        btnModifyUser.setForeground(new java.awt.Color(0, 153, 153));
+        btnModifyUser.setText("Modify");
+        btnModifyUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifyUserActionPerformed(evt);
+            }
+        });
 
         jLabel28.setFont(new java.awt.Font("Eras Demi ITC", 0, 22)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(0, 153, 153));
@@ -955,13 +963,13 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             }
         });
 
-        btnSearchAcct4.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
-        btnSearchAcct4.setForeground(new java.awt.Color(0, 153, 153));
-        btnSearchAcct4.setText("Delete");
-        btnSearchAcct4.setPreferredSize(new java.awt.Dimension(143, 37));
-        btnSearchAcct4.addActionListener(new java.awt.event.ActionListener() {
+        btnDeleteUser.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
+        btnDeleteUser.setForeground(new java.awt.Color(0, 153, 153));
+        btnDeleteUser.setText("Delete");
+        btnDeleteUser.setPreferredSize(new java.awt.Dimension(143, 37));
+        btnDeleteUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchAcct4ActionPerformed(evt);
+                btnDeleteUserActionPerformed(evt);
             }
         });
 
@@ -1043,9 +1051,9 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 .addGroup(jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtSearchUser, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelCashierLayout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(btnCreateUser)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2))
+                        .addComponent(btnModifyUser))
                     .addComponent(txtUserPw, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39)
@@ -1056,7 +1064,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                             .addComponent(btnSearchAcct3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(36, 36, 36))
                     .addGroup(jPanelCashierLayout.createSequentialGroup()
-                        .addComponent(btnSearchAcct4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDeleteUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61))
@@ -1085,9 +1093,9 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                                     .addComponent(jLabel28))
                                 .addGap(33, 33, 33)
                                 .addGroup(jPanelCashierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jButton1)
-                                    .addComponent(jButton2)
-                                    .addComponent(btnSearchAcct4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(btnCreateUser)
+                                    .addComponent(btnModifyUser)
+                                    .addComponent(btnDeleteUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanelCashierLayout.createSequentialGroup()
                                 .addComponent(btnSearchAcct3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -1566,6 +1574,26 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
 
     private void btnSearchAcct2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchAcct2ActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblAllUsers1.getModel();
+        try {
+
+            int rows = 0;
+            UserDAO account = new UserDAO();
+            List<User> systemUsers = (List<User>) account.viewAllUsers();
+            //System.out.println();
+            while (systemUsers.size() > rows) {
+                model.setValueAt(systemUsers.get(rows).getId(), rows, 0);
+                model.setValueAt(systemUsers.get(rows).getUsername(), rows, 1);
+                model.setValueAt(systemUsers.get(rows).getRole(), rows, 2);
+                rows++;
+
+            }
+            String tot = String.valueOf(rows);
+            lblTotal.setText(tot);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_btnSearchAcct2ActionPerformed
 
     private void btnSearchAcct3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchAcct3ActionPerformed
@@ -1591,7 +1619,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSearchAcct3ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCreateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateUserActionPerformed
         String un = "";
         String username = txtUser.getText();
         String password = String.valueOf(txtUserPw.getPassword());
@@ -1620,13 +1648,13 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(ApplicationMainMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 JOptionPane.showMessageDialog(this, "Cashier account has been Created Successfully!", "Banking System - Bank Account Created.", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCreateUserActionPerformed
 
-    private void btnSearchAcct4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchAcct4ActionPerformed
+    private void btnDeleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUserActionPerformed
         try {
             String un = "";
             String cashierAcc = txtUser.getText();
@@ -1657,8 +1685,8 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                         //Stud Info Not Found
                         JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + cashierAcc + " Doesn't Exist!", "Banking System - Bank Doesn't Exist.", JOptionPane.INFORMATION_MESSAGE);
                     } else if (cashierAcc.intern().equals(un.intern())) {
-                       //User newUser = new User();
-                       user.deleteAccount(un);
+                        //User newUser = new User();
+                        user.deleteAccount(un);
                         //Bank Successfully Deleted
                         JOptionPane.showMessageDialog(this, "Bank Information has been Deleted Successfully!", "Banking System - Bank Deleted.", JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -1669,7 +1697,44 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error! Can't Connect be to Database! Please Contact System Administrator.", "Banking System - Connection Error.", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-    }//GEN-LAST:event_btnSearchAcct4ActionPerformed
+    }//GEN-LAST:event_btnDeleteUserActionPerformed
+
+    private void btnModifyUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyUserActionPerformed
+        // TODO add your handling code here:
+        int userId;
+        String un = "";
+        String searchName = txtSearchUser.getText();
+        String username = txtUser.getText();
+        String password = String.valueOf(txtUserPw.getPassword());
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Fill in All Required Information!", "Banking SYstem - Required Information.", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            UserDAO user = new UserDAO();
+            User existinguser = null;
+            try {
+                existinguser = user.selectAccount(searchName);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ApplicationMainMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+          
+            if (existinguser != null) {
+                un = existinguser.getUsername();    
+                userId = existinguser.getId();
+                System.out.println(userId);
+                
+                try {
+                    //Info Already Exist (Must Not Insert Duplicate Info)
+                    User newUser = new User(userId, username, password);
+                    user.updateCashier(newUser);
+                    JOptionPane.showMessageDialog(this, "Cashier account has been Updated Successfully!", "Banking System - Cashier Account Updated.", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(ApplicationMainMenu.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+        }
+    }//GEN-LAST:event_btnModifyUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1715,9 +1780,12 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnClear1;
     private javax.swing.JButton btnClear3;
+    private javax.swing.JButton btnCreateUser;
     private javax.swing.JButton btnDeleteAcct;
+    private javax.swing.JButton btnDeleteUser;
     private javax.swing.JButton btnDeposit;
     private javax.swing.JButton btnModifyAcct;
+    private javax.swing.JButton btnModifyUser;
     private javax.swing.JButton btnOpenAcct;
     private javax.swing.JButton btnRegister3;
     private javax.swing.JButton btnSearch1;
@@ -1727,13 +1795,10 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnSearchAcct1;
     private javax.swing.JButton btnSearchAcct2;
     private javax.swing.JButton btnSearchAcct3;
-    private javax.swing.JButton btnSearchAcct4;
     private javax.swing.JButton btnViewAll;
     private javax.swing.JComboBox cboAccountType;
     private javax.swing.JComboBox cboBranch;
     private javax.swing.JComboBox cboSex;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
