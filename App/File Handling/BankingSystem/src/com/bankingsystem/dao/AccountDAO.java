@@ -18,6 +18,10 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.ArrayList;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.lang.NumberFormatException;
 /**
  *
  * @author DHARSHITHA
@@ -58,32 +62,65 @@ public class AccountDAO {
     }
 
     //View account by ID
-    public Account selectAccount(String selectedAccount) throws ClassNotFoundException {
+    public Account selectAccount(String selectedAccount) throws ClassNotFoundException, IOException {
 
         Account account = null;
         try {
-
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-            statement = conn.createStatement();
-            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ACCOUNT_BY_ID);
-            preparedStatement.setString(1, selectedAccount);
-            System.out.println(preparedStatement);
-            // Execute the query or update query
-            ResultSet rs = preparedStatement.executeQuery();
-
-            // Process the ResultSet object.
-            while (rs.next()) {
-                String accountNo = rs.getString("acct_no");
-                String customerName = rs.getString("customer_name");
-                String sex = rs.getString("sex");
-                String branch = rs.getString("branch");
-                String accountType = rs.getString("account_type");
-                double initialBalance = rs.getDouble("initial_balance");
-                account = new CommonAccount(accountNo, customerName, sex, branch, accountType, initialBalance);
+            String nameNumberString;
+             
+            String accountNo;
+            String cusName;
+            String gender;
+            String branch;
+            String accType;
+            double balance;
+            // Using file pointer creating the file.
+            File file = new File("Accounts.txt");
+ 
+            if (!file.exists()) {
+                // Create a new file if not exists.
+                file.createNewFile();
             }
-        } catch (SQLException e) {
-            printSQLException(e);
+ 
+            // Opening file in reading and write mode.
+            RandomAccessFile raf
+                = new RandomAccessFile(file, "rw");
+            boolean found = false;
+ 
+            // Traversing the file
+            // getFilePointer() give the current offset
+            // value from start of the file.
+            while (raf.getFilePointer() < raf.length()) {
+ 
+                // reading line from the file.
+                nameNumberString = raf.readLine();
+ 
+                // splitting the string to get name and
+                // number
+                String[] lineSplit
+                    = nameNumberString.split("!");
+ 
+                // separating name and number.
+                accountNo = lineSplit[0];
+                cusName = lineSplit[1];
+                gender = lineSplit[2];
+                branch = lineSplit[3];
+                accType = lineSplit[4];
+                balance = Double.parseDouble(lineSplit[5]);
+                
+                if(selectedAccount.equals(accountNo)){
+                    account = new CommonAccount(accountNo, cusName, gender, branch, accType, balance);
+                    return account;
+                }
+            }
+            account = null;
+            return account;
+        } catch (IOException ioe) {
+            System.out.println(ioe);
+        }
+        catch (NumberFormatException nef)
+        {
+             System.out.println(nef);
         }
         return account;
     }
@@ -123,23 +160,97 @@ public class AccountDAO {
     public void createAccount(Account account) throws ClassNotFoundException {
 
         try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-            statement = conn.createStatement();
-            PreparedStatement preparedStatement = conn.prepareStatement(INSERT_ACCOUNT_SQL);
-            preparedStatement.setString(1, account.getAcctNo());
-            preparedStatement.setString(2, account.getCustomerName());
-            preparedStatement.setString(3, account.getSex());
-            preparedStatement.setString(4, account.getBranch());
-            preparedStatement.setString(5, account.getAccountType());
-            preparedStatement.setDouble(6, account.getInitialBalance());
-            System.out.println(preparedStatement);
-            // Execute the query or update query
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            printSQLException(e);
+            String[] data = null;
+            
+            String nameNumberString;
+                        
+            String accountNo = account.getAcctNo();
+            String cusName = account.getCustomerName();
+            String gender = account.getSex();
+            String branch = account.getBranch();
+            String accType = account.getAccountType();
+            double balance = account.getInitialBalance();
+ 
+            // Using file pointer creating the file.
+            File file = new File("Accounts.txt");
+ 
+            if (!file.exists()) {
+                // Create a new file if not exists.
+                file.createNewFile();
+            }
+            long fileLength = file.length();
+            // Opening file in reading and write mode.
+            RandomAccessFile raf = new RandomAccessFile(file, "rw");
+            raf.seek(fileLength);
+            boolean found = false;
+ 
+            // Checking whether the name
+            // of contact already exists.
+            // getFilePointer() give the current offset
+            // value from start of the file.
+            /*while (raf.getFilePointer() < raf.length()) {
+ 
+                // reading line from the file.
+                nameNumberString = raf.readLine();
+ 
+                // splitting the string to get name and
+                // number
+                String[] lineSplit = nameNumberString.split("!");
+ 
+                // separating name and number.
+                //name = lineSplit[0];
+                //number = Long.parseLong(lineSplit[1]);
+                
+                accountNo = lineSplit[0];
+ 
+                // if condition to find existence of record.
+                if (accountNo.equals(account.getAcctNo())){
+                    found = true;
+                    break;
+                }
+            }*/
+ 
+            //if (found == false) {
+            
+                System.out.println("In");
+                // Enter the if block when a record
+                // is not already present in the file.
+                nameNumberString = accountNo + "!" + cusName + "!" + gender +  "!" + branch + "!" + accType + "!" + balance; 
+ 
+                // writeBytes function to write a string
+                // as a sequence of bytes.
+                raf.writeBytes(nameNumberString);
+ 
+                // To insert the next record in new line.
+                raf.writeBytes(System.lineSeparator());
+ 
+                // Print the message
+                System.out.println(" Acount added. ");
+ 
+                // Closing the resources.
+                raf.close();
+            //}
+            // The contact to be updated
+            // could not be found
+            /*else {
+ 
+                // Closing the resources.
+                raf.close();
+ 
+                // Print the message
+                System.out.println(" Input name" + " does not exists. ");
+            }*/
         }
+ 
+        catch (IOException ioe) {
+ 
+            System.out.println(ioe);
+        }
+        catch (NumberFormatException nef) {
+ 
+            System.out.println(nef);
+        }
+    
     }
 
     //Update account
