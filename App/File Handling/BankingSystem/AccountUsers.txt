@@ -1,0 +1,2 @@
+manager!manager!Manager
+cashier1!cashier!Cashier
