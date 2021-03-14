@@ -6,15 +6,11 @@
 package javadesktopapp;
 
 import com.bankingsystem.dao.UserDAO;
-import com.bankingsystem.model.User;
 import java.io.IOException;
-import java.rmi.Naming;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *

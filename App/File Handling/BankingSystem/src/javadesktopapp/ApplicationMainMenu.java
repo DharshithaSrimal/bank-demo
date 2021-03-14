@@ -6,12 +6,9 @@
 package javadesktopapp;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.Statement;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import com.bankingsystem.dao.AccountDAO;
@@ -23,7 +20,6 @@ import com.bankingsystem.model.SavingsAccount;
 import com.bankingsystem.model.Transaction;
 import com.bankingsystem.model.User;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
