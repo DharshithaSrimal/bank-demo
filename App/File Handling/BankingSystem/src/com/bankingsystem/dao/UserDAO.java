@@ -5,12 +5,8 @@
  */
 package com.bankingsystem.dao;
 
-import static com.bankingsystem.dao.AccountDAO.DRIVER;
-import com.bankingsystem.model.Account;
-import com.bankingsystem.model.CommonAccount;
 import com.bankingsystem.model.User;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,20 +23,6 @@ import java.lang.NumberFormatException;
  * @author 
  */
 public class UserDAO {
-
-    Connection conn = null; // Manages connion
-    Statement statement = null; // Query statement
-    PreparedStatement ps; //Prepared statement
-    ResultSet rs; //Result set
-
-    static final String DRIVER = "com.mysql.jdbc.Driver"; //Driver
-    private static final String SELECT_ACCOUNT_BY_USERNAME = "SELECT * FROM user WHERE username = ? AND password = ?";
-    static final String DATABASE_URL = "jdbc:mysql://localhost/bank"; //JDBC
-    private static final String INSERT_USER_SQL = "INSERT INTO user(username, password, role) VALUES (? , ?, ?)";
-    private static final String SELECT_USER_BY_USERNAME = "SELECT * FROM user WHERE username = ?";
-    private static final String DELETE_USER_SQL = "delete from user where username = ?;";
-    private static final String UPDATE_CASHIER_SQL = "UPDATE user SET username = ?,  password = ? WHERE id = ?";
-    private static final String SELECT_ALL_USERS = "SELECT id, username, role FROM user";
 
     public String checkPassword(String username, String password) throws ClassNotFoundException, SQLException, IOException {
         String role = "";

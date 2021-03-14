@@ -217,7 +217,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
 
         jLabel12.setFont(new java.awt.Font("Eras Demi ITC", 0, 22)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel12.setText("Sex:");
+        jLabel12.setText("Gender:");
 
         jLabel13.setFont(new java.awt.Font("Eras Demi ITC", 0, 22)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 153, 153));

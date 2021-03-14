@@ -29,39 +29,6 @@ import java.lang.NumberFormatException;
  */
 public class AccountDAO {
 
-    static final String jdbcDriver = "com.mysql.jdbc.Driver"; //Driver
-    //static final String DATABASE_URL1 = "jdbc:oracle:thin:@localhost:1521:orcl", "gebre", "gebre12";
-    static final String jdbcURL = "jdbc:mysql://localhost/bank"; //JDBC
-    static final String jdbcUsername = "root"; //JDBC
-    static final String jdbcPassword = "";
-    Connection conn = null; // Manages connion
-    Statement statement = null; // Query statement
-    PreparedStatement ps; //Prepared statement
-    ResultSet rs; //Result set
-
-    static final String DRIVER = "com.mysql.jdbc.Driver"; //Driver
-    //static final String DATABASE_URL1 = "jdbc:oracle:thin:@localhost:1521:orcl", "gebre", "gebre12";
-    static final String DATABASE_URL = "jdbc:mysql://localhost/bank"; //JDBC
-
-    private static final String INSERT_ACCOUNT_SQL = "INSERT INTO tblAccount(acct_no, customer_name, sex, branch, account_type, initial_balance) VALUES (? , ?, ?, ?, ?, ?)";
-    private static final String SELECT_ACCOUNT_BY_ID = "SELECT * FROM tblAccount WHERE acct_no = ?";
-    private static final String SELECT_ALL_ACCOUNTS = "SELECT * FROM tblAccount";
-    private static final String DELETE_ACCOUNT_SQL = "delete from users where id = ?";
-    private static final String UPDATE_ACCOUNT_SQL = "UPDATE  tblAccount SET customer_name = ?,  sex = ?, branch = ?, initial_balance = ? WHERE acct_no = ?";
-
-    protected Connection getConnection() {
-        Connection connection = null;
-        try {
-            Class.forName("jdbcDriver");
-            connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return connection;
-    }
-
     //View account by ID
     public Account selectAccount(String selectedAccount) throws ClassNotFoundException, IOException {
 
