@@ -22,6 +22,7 @@ import com.bankingsystem.model.FixedAccount;
 import com.bankingsystem.model.SavingsAccount;
 import com.bankingsystem.model.Transaction;
 import com.bankingsystem.model.User;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -1256,6 +1257,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                     txtCustomerName.setText(existingAccount.getCustomerName());
                     cboSex.setSelectedItem(existingAccount.getSex());
                     cboBranch.setSelectedItem(existingAccount.getBranch());
+                    cboAccountType.setSelectedItem(existingAccount.getAccountType());
                     txtInitialBalance.setText(String.valueOf(existingAccount.getInitialBalance()));
                 } else {
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + txtSearchAcctNo.getText() + " Not Found!", "Banking System - Bank Not Found", JOptionPane.INFORMATION_MESSAGE);
@@ -1297,10 +1299,10 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 } else if (acctNo.intern().equals(AcctNumber.intern())) {
                     if (accountType == "Savings") {
                         Account newAccount = new SavingsAccount(acctNo, customerName, sex, branch, accountType, initial_balance1);
-                        account.createAccount(newAccount);
+                        account.updateAccount(newAccount);
                     } else if (accountType == "Fixed") {
                         Account newAccount = new FixedAccount(acctNo, customerName, sex, branch, accountType, initial_balance1);
-                        account.createAccount(newAccount);
+                        account.updateAccount(newAccount);
                     }
                     //Successfully Updated
                     JOptionPane.showMessageDialog(this, "Bank Acct Information has been Updated Successfully!", "Banking System - Bank Acct Updated.", JOptionPane.INFORMATION_MESSAGE);
@@ -1313,46 +1315,36 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModifyAcctActionPerformed
 
     private void btnDeleteAcctActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteAcctActionPerformed
-        // TODO add your handling code here:
         try {
+            // TODO add your handling code here:
             String AcctNumber = "";
-            String acctNo = txtSearchAcctNo.getText();
-            String acctNo1 = txtAcctNo.getText();
+            String acctNo = txtAcctNo.getText();
+            String customerName = txtCustomerName.getText();
+            String sex = (String) cboSex.getSelectedItem();
+            String branch = (String) cboBranch.getSelectedItem();
+            String initial_balance = txtInitialBalance.getText();
+            String accountType = (String) cboAccountType.getSelectedItem();
+            AccountDAO account = new AccountDAO();
+            Account existingcount = account.selectAccount(acctNo);
 
-            if (acctNo.isEmpty() && acctNo1.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please Enter Account Number to Delete!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                //Show a Confirmation Dialog.
-                int reply = JOptionPane.showConfirmDialog(this,
-                        "Are you Sure You Want to Delete the Bank Information With Account Number " + acctNo + " from the Database?",
-                        "Banking System - Confirm Deletion?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                //Check the User Selection.
-                if (reply == JOptionPane.YES_OPTION) {
-                    Class.forName(DRIVER);
-                    // Establish conn to database
-                    conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-                    // Create Statement for querying database
-                    String query = "SELECT *FROM tblAccount WHERE acct_no='" + acctNo + "'";
-                    ps = (PreparedStatement) conn.prepareStatement(query);
-                    rs = ps.executeQuery();
-                    while (rs.next()) {
-                        AcctNumber = rs.getString("acct_no");
-                    }
-                    if (!acctNo.intern().equals(AcctNumber.intern())) {
-                        //Stud Info Not Found
-                        JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + acctNo + " Doesn't Exist!", "Banking System - Bank Doesn't Exist.", JOptionPane.INFORMATION_MESSAGE);
-                    } else if (acctNo.intern().equals(AcctNumber.intern())) {
-                        ps = (PreparedStatement) conn.prepareStatement("DELETE FROM  tblAccount WHERE acct_no = '" + acctNo + "'");
-                        ps.executeUpdate();
-                        //Bank Successfully Deleted
-                        JOptionPane.showMessageDialog(this, "Bank Information has been Deleted Successfully!", "Banking System - Bank Deleted.", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                } else if (reply == JOptionPane.NO_OPTION) {
-                }
+            if (existingcount != null) {
+                AcctNumber = existingcount.getAcctNo();
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error! Can't Connect be to Database! Please Contact System Administrator.", "Banking System - Connection Error.", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+            if (!acctNo.intern().equals(AcctNumber.intern())) {
+                //Info Doesn't Exist
+                JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + acctNo + " Doesn't Exist!", "Banking System - Bank Acct Doesn't Exist.", JOptionPane.INFORMATION_MESSAGE);
+            } else if (acctNo.intern().equals(AcctNumber.intern())) {
+                double initial_balance1 = Double.parseDouble(initial_balance);
+                Account newAccount = new SavingsAccount(acctNo, customerName, sex, branch, accountType, initial_balance1);
+                account.deleteAccount(newAccount);
+
+                //Successfully Deleted
+                JOptionPane.showMessageDialog(this, "Bank Acct Information has been Deleted Successfully!", "Banking System - Bank Acct Deleted.", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ApplicationMainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ApplicationMainMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnDeleteAcctActionPerformed
 
@@ -1569,7 +1561,55 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
 
     private void btnSearchAcct1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchAcct1ActionPerformed
         // TODO add your handling code here:
-        getAllUsers();
+        /*try {
+            String acctNo = txtSearchAcctNo.getText();
+
+            if (acctNo.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Enter Bank Account Number to Search!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                AccountDAO account = new AccountDAO();
+                Account existingAccount = account.selectAccount(acctNo);
+
+                if (existingAccount != null) {
+                    txtAcctNo.setText(existingAccount.getAcctNo());
+                    txtCustomerName.setText(existingAccount.getCustomerName());
+                    cboSex.setSelectedItem(existingAccount.getSex());
+                    cboBranch.setSelectedItem(existingAccount.getBranch());
+                    cboAccountType.setSelectedItem(existingAccount.getAccountType());
+                    txtInitialBalance.setText(String.valueOf(existingAccount.getInitialBalance()));
+                } else {
+                    JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + txtSearchAcctNo.getText() + " Not Found!", "Banking System - Bank Not Found", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error! Can't Connect be to Database! Please Contact System Administrator.", "Banking System - Connection Error.", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }*/
+        
+        
+        DefaultTableModel model = (DefaultTableModel) tblAllUsers.getModel();
+        try {
+
+            int rows = 0;
+            AccountDAO account = new AccountDAO();
+            List<Account> accountUsers = (List<Account>) account.viewAllAccounts();
+            //System.out.println();
+            while (accountUsers.size() > rows) {
+                model.setValueAt(accountUsers.get(rows).getAcctNo(), rows, 0);
+                model.setValueAt(accountUsers.get(rows).getCustomerName(), rows, 1);
+                model.setValueAt(accountUsers.get(rows).getBranch(), rows, 2);
+                model.setValueAt(accountUsers.get(rows).getAccountType(), rows, 3);
+                model.setValueAt(accountUsers.get(rows).getInitialBalance(), rows, 4);
+                rows++;
+
+            }
+            String tot = String.valueOf(rows);
+            lblTotal.setText(tot);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+        //getAllUsers();
     }//GEN-LAST:event_btnSearchAcct1ActionPerformed
 
     private void btnSearchAcct2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchAcct2ActionPerformed
@@ -1716,12 +1756,12 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ApplicationMainMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
-          
+
             if (existinguser != null) {
-                un = existinguser.getUsername();    
+                un = existinguser.getUsername();
                 userId = existinguser.getId();
                 System.out.println(userId);
-                
+
                 try {
                     //Info Already Exist (Must Not Insert Duplicate Info)
                     User newUser = new User(userId, username, password);
@@ -1732,7 +1772,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                     Logger.getLogger(ApplicationMainMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
+
         }
     }//GEN-LAST:event_btnModifyUserActionPerformed
 
