@@ -7,7 +7,7 @@ package com.bankingsystem.model;
 
 /**
  *
- * @author DHARSHITHA
+ * @author 
  */
 public class FixedAccount extends Account{
      public FixedAccount(String acctNo, String customerName, String sex, String branch, String accountType, double initialBalance) {

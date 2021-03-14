@@ -8,19 +8,24 @@ package com.bankingsystem.dao;
 import static com.bankingsystem.dao.AccountDAO.DRIVER;
 import com.bankingsystem.model.Account;
 import com.bankingsystem.model.Transaction;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  *
- * @author DHARSHITHA
+ * @author 
  */
 public class TransactionDAO {
 
@@ -44,100 +49,189 @@ public class TransactionDAO {
     private static final String DELETE_ACCOUNT_SQL = "delete from users where id = ?;";
     private static final String UPDATE_ACCOUNT_SQL = "UPDATE  tblAccount SET initial_balance = ? WHERE acct_no = ?";
     private static final String DEPOSIT_MONEY_SQL = "INSERT INTO transactions (acct_no, customer_name, deposit,withdraw, balance, date) VALUES(?, ?, ?, ?, ?, CURDATE())";
-    
+
     public List<Transaction> selectTransactionsById(String selectedAccount) throws ClassNotFoundException {
 
         ArrayList<Transaction> transactions;
         transactions = new ArrayList<Transaction>();
+
+        Transaction transaction = null;
         try {
+            String nameNumberString;
 
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-            statement = conn.createStatement();
-            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_TRANSACTION_BY_ID);
-            preparedStatement.setString(1, selectedAccount);
-            System.out.println(preparedStatement);
-            // Execute the query or update query
-            ResultSet rs = preparedStatement.executeQuery();
+            String acctNo;
+            String customerName;
+            double deposit;
+            double withdraw;
+            double balance;
+            Date date;
 
-            // Process the ResultSet object.
-            while (rs.next()) {
-                String accountNo = rs.getString("acct_no");
-                String customerName = rs.getString("customer_name");
-                double deposit = rs.getDouble("deposit");
-                double withdraw = rs.getDouble("withdraw");
-                double balance = rs.getDouble("balance");
-                Date date = rs.getDate("date");
-                transactions.add(new Transaction(accountNo, customerName, deposit, withdraw, balance, date));
-               
+            // Using file pointer creating the file.
+            File file = new File("Transactions.txt");
+
+            if (!file.exists()) {
+                // Create a new file if not exists.
+                file.createNewFile();
             }
-        } catch (SQLException e) {
-            printSQLException(e);
+
+            // Opening file in reading and write mode.
+            RandomAccessFile raf = new RandomAccessFile(file, "rw");
+            boolean found = false;
+
+            // Traversing the file
+            // getFilePointer() give the current offset
+            // value from start of the file.
+            while (raf.getFilePointer() < raf.length()) {
+
+                // reading line from the file.
+                nameNumberString = raf.readLine();
+
+                // splitting the string to get name and
+                // number
+                String[] lineSplit = nameNumberString.split("!");
+
+                // separating name and number.                
+                acctNo = lineSplit[0];
+                customerName = lineSplit[1];
+                deposit = Double.parseDouble(lineSplit[2]);
+                withdraw = Double.parseDouble(lineSplit[3]);
+                balance = Double.parseDouble(lineSplit[4]);
+
+                //date = new SimpleDateFormat("E, MMM dd yyyy HH:mm:ss").parse(lineSplit[5]);    
+                if (selectedAccount.equals(acctNo)) {
+                    transactions.add(new Transaction(acctNo, customerName, deposit, withdraw, balance));
+                    System.out.println(transactions);
+                    return transactions;
+                }
+            }
+
+        } catch (IOException ioe) {
+            System.out.println(ioe);
+        } catch (NumberFormatException nef) {
+            System.out.println(nef);
         }
+        transactions = null;
         return transactions;
     }
-    
-    public List<Transaction> viewAllTransactions() throws ClassNotFoundException {
+
+    public List<Transaction> viewAllTransactions() throws ClassNotFoundException, ParseException {
 
         ArrayList<Transaction> transactions;
         transactions = new ArrayList<Transaction>();
+
+        Transaction transaction = null;
         try {
+            String nameNumberString;
 
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-            statement = conn.createStatement();
-            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ALL_TRANSACTIONS);
-            System.out.println(preparedStatement);
-            // Execute the query or update query
-            ResultSet rs = preparedStatement.executeQuery();
+            String acctNo;
+            String customerName;
+            double deposit;
+            double withdraw;
+            double balance;
+            Date date;
 
-            // Process the ResultSet object.
-            while (rs.next()) {
-                String accountNo = rs.getString("acct_no");
-                String customerName = rs.getString("customer_name");
-                double deposit = rs.getDouble("deposit");
-                double withdraw = rs.getDouble("withdraw");
-                double balance = rs.getDouble("balance");
-                Date date = rs.getDate("date");
-                transactions.add(new Transaction(accountNo, customerName, deposit, withdraw, balance, date));
-               
+            // Using file pointer creating the file.
+            File file = new File("Transactions.txt");
+
+            if (!file.exists()) {
+                // Create a new file if not exists.
+                file.createNewFile();
             }
-        } catch (SQLException e) {
-            printSQLException(e);
+
+            // Opening file in reading and write mode.
+            RandomAccessFile raf = new RandomAccessFile(file, "rw");
+            boolean found = false;
+
+            // Traversing the file
+            // getFilePointer() give the current offset
+            // value from start of the file.
+            while (raf.getFilePointer() < raf.length()) {
+
+                // reading line from the file.
+                nameNumberString = raf.readLine();
+
+                // splitting the string to get name and
+                // number
+                String[] lineSplit = nameNumberString.split("!");
+
+                // separating name and number.                
+                acctNo = lineSplit[0];
+                customerName = lineSplit[1];
+                deposit = Double.parseDouble(lineSplit[2]);
+                withdraw = Double.parseDouble(lineSplit[3]);
+                balance = Double.parseDouble(lineSplit[4]);
+
+                //date = new SimpleDateFormat("E, MMM dd yyyy HH:mm:ss").parse(lineSplit[5]);    
+                transactions.add(new Transaction(acctNo, customerName, deposit, withdraw, balance));
+                System.out.println(transactions);
+
+            }
+
+        } catch (IOException ioe) {
+            System.out.println(ioe);
+        } catch (NumberFormatException nef) {
+            System.out.println(nef);
         }
+
         return transactions;
     }
-   
-    public void makeTransaction(Transaction transaction) throws ClassNotFoundException{
-    try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-            statement = conn.createStatement();
-            //Insert transaction data
-            PreparedStatement preparedStatement = conn.prepareStatement(DEPOSIT_MONEY_SQL);
-            preparedStatement.setString(1, transaction.getAcctNo());
-            preparedStatement.setString(2, transaction.getCustomerName());
-            preparedStatement.setDouble(3, transaction.getDeposit());
-            preparedStatement.setDouble(4, transaction.getWithdraw());
-            preparedStatement.setDouble(5, transaction.getBalance());
-            //preparedStatement.setDate(6, (java.sql.Date) transaction.getDate());
-            System.out.println(preparedStatement);
 
-            // Execute the query or update query
-            preparedStatement.executeUpdate();    
-            updateAccount(transaction.getAcctNo(), transaction.getBalance());
+    public void makeTransaction(Transaction transaction) throws ClassNotFoundException, IOException {
+        try {
 
-        } catch (SQLException e) {
-            printSQLException(e);
+            String[] data = null;
+            String nameNumberString;
+
+            String acctNo = transaction.getAcctNo();
+            String customerName = transaction.getCustomerName();
+            double deposit = transaction.getDeposit();
+            double withdraw = transaction.getWithdraw();
+            double balance = transaction.getBalance();
+            Date date = new Date();
+
+            File file = new File("Transactions.txt");
+
+            if (!file.exists()) {
+                // Create a new file if not exists.
+                file.createNewFile();
+            }
+            long fileLength = file.length();
+            // Opening file in reading and write mode.
+            RandomAccessFile raf = new RandomAccessFile(file, "rw");
+            raf.seek(fileLength);
+            System.out.println("In");
+            // Enter the if block when a record
+            // is not already present in the file.
+            nameNumberString = acctNo + "!" + customerName + "!" + deposit + "!" + withdraw + "!" + balance + "!" + balance + "!" + date;
+
+            // writeBytes function to write a string
+            // as a sequence of bytes.
+            raf.writeBytes(nameNumberString);
+
+            // To insert the next record in new line.
+            raf.writeBytes(System.lineSeparator());
+
+            // Print the message
+            System.out.println(" Acount added. ");
+
+            // Closing the resources.
+            raf.close();
+
+        } catch (IOException ioe) {
+
+            System.out.println(ioe);
+        } catch (NumberFormatException nef) {
+
+            System.out.println(nef);
         }
     }
-    
-    public void updateAccount(String acctNo, double balance) throws ClassNotFoundException{
-     try {
+
+    public void updateAccount(String acctNo, double balance) throws ClassNotFoundException {
+        try {
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(DATABASE_URL, "root", "");
             statement = conn.createStatement();
-       
+
             //Update account balance
             PreparedStatement preparedStatement = conn.prepareStatement(UPDATE_ACCOUNT_SQL);
             preparedStatement.setDouble(1, balance);
@@ -150,7 +244,7 @@ public class TransactionDAO {
             printSQLException(e);
         }
     }
-    
+
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {
             if (e instanceof SQLException) {

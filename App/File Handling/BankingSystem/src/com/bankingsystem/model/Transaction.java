@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  *
- * @author DHARSHITHA
+ * @author 
  */
 public class Transaction {
     private String acctNo;

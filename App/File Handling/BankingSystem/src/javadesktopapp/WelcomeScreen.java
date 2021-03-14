@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Cyber
+ * @author
  */
 public class WelcomeScreen extends javax.swing.JFrame {
 

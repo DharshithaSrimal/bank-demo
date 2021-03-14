@@ -1,2 +1,3 @@
 manager!manager!Manager
-cashier1!cashier!Cashier
+cashier1!asd!Cashier
+cashier2!ABC!Cashier

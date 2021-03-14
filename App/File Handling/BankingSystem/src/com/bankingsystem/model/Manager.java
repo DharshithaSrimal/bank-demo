@@ -7,7 +7,7 @@ package com.bankingsystem.model;
 
 /**
  *
- * @author DHARSHITHA
+ * @author 
  */
 public class Manager {
     

@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Cyber
+ * @author 
  */
 public class ApplicationMainMenu extends javax.swing.JFrame {
 
@@ -798,66 +798,62 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
         tblTransactions.setForeground(new java.awt.Color(0, 153, 153));
         tblTransactions.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Bank Account", "Customer Name", "Deposit", "Withdrawal", "Current Balance", "Date"
+                "Bank Account", "Customer Name", "Deposit", "Withdrawal", "Current Balance"
             }
         ));
         jScrollPane1.setViewportView(tblTransactions);
-        if (tblTransactions.getColumnModel().getColumnCount() > 0) {
-            tblTransactions.getColumnModel().getColumn(2).setHeaderValue("Deposit");
-            tblTransactions.getColumnModel().getColumn(3).setHeaderValue("Withdrawal");
-        }
 
         jLabel24.setFont(new java.awt.Font("Eras Light ITC", 1, 24)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(0, 153, 153));
@@ -1177,7 +1173,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 model.setValueAt(accountTransaction.get(rows).getDeposit(), rows, 2);
                 model.setValueAt(accountTransaction.get(rows).getWithdraw(), rows, 3);
                 model.setValueAt(accountTransaction.get(rows).getBalance(), rows, 4);
-                model.setValueAt(accountTransaction.get(rows).getDate(), rows, 5);
+                //model.setValueAt(accountTransaction.get(rows).getDate(), rows, 5);
                 rows++;
                 total = rows;
 
@@ -1421,6 +1417,9 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                     Transaction newDeposit = new Transaction(acctNo, customerName, deposit, withdraw, bal);
                     TransactionDAO transaction = new TransactionDAO();
                     transaction.makeTransaction(newDeposit);
+                    
+                    Account newAccount = new SavingsAccount(acctNo, customerName, existingAccount.getSex(), existingAccount.getBranch(), existingAccount.getAccountType(), bal);
+                    account.updateAccount(newAccount);
                     JOptionPane.showMessageDialog(this, "Bank Information has been Deposited Successfully!", "Banking System - Bank Deposited.", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -1485,10 +1484,9 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Please Fill in All Required Information!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 double currbal1 = Double.parseDouble(currbal);
-                double withdraw = Double.parseDouble(amount);
-
-                double bal = currbal1 - withdraw; //deposit
-                double deposit = 0;
+                double deposit = Double.parseDouble(amount);
+                double bal = currbal1 - deposit; //deposit
+                double withdraw = 0;
 
                 AccountDAO account = new AccountDAO();
                 Account existingAccount = account.selectAccount(acctNo);
@@ -1500,16 +1498,15 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
                 if (!acctNo.intern().equals(AcctNumber.intern())) {
                     //Info Already Exist (Must Not Insert Duplicate Info)
                     JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + acctNo + " Already Exist!", "Banking System - Bank Already Exist.", JOptionPane.INFORMATION_MESSAGE);
-                } else if (currbal1 <= withdraw) {
-                    //Info Already Exist (Must Not Insert Duplicate Info)
-                    JOptionPane.showMessageDialog(this, "Insufficient Balance in Account Number ", "Banking System - Insufficient Balance.", JOptionPane.INFORMATION_MESSAGE);
                 } else if (acctNo.intern().equals(AcctNumber.intern())) {
-                    Transaction newWithdraw = new Transaction(acctNo, customerName, deposit, withdraw, bal);
-                    TransactionDAO transaction = new TransactionDAO();
-                    transaction.makeTransaction(newWithdraw);
 
-                    // Successfully Registered
-                    JOptionPane.showMessageDialog(this, "Bank Information has been Withdrawn Successfully!", "Banking System - Bank Registered.", JOptionPane.INFORMATION_MESSAGE);
+                    Transaction newDeposit = new Transaction(acctNo, customerName, deposit, withdraw, bal);
+                    TransactionDAO transaction = new TransactionDAO();
+                    transaction.makeTransaction(newDeposit);
+                    
+                    Account newAccount = new SavingsAccount(acctNo, customerName, existingAccount.getSex(), existingAccount.getBranch(), existingAccount.getAccountType(), bal);
+                    account.updateAccount(newAccount);
+                    JOptionPane.showMessageDialog(this, "Bank Information has been Deposited Successfully!", "Banking System - Bank Deposited.", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         } catch (Exception e) {
@@ -1561,32 +1558,7 @@ public class ApplicationMainMenu extends javax.swing.JFrame {
 
     private void btnSearchAcct1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchAcct1ActionPerformed
         // TODO add your handling code here:
-        /*try {
-            String acctNo = txtSearchAcctNo.getText();
-
-            if (acctNo.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please Enter Bank Account Number to Search!", "Banking System - Required Information.", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                AccountDAO account = new AccountDAO();
-                Account existingAccount = account.selectAccount(acctNo);
-
-                if (existingAccount != null) {
-                    txtAcctNo.setText(existingAccount.getAcctNo());
-                    txtCustomerName.setText(existingAccount.getCustomerName());
-                    cboSex.setSelectedItem(existingAccount.getSex());
-                    cboBranch.setSelectedItem(existingAccount.getBranch());
-                    cboAccountType.setSelectedItem(existingAccount.getAccountType());
-                    txtInitialBalance.setText(String.valueOf(existingAccount.getInitialBalance()));
-                } else {
-                    JOptionPane.showMessageDialog(this, "Bank Information With Account Number " + txtSearchAcctNo.getText() + " Not Found!", "Banking System - Bank Not Found", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error! Can't Connect be to Database! Please Contact System Administrator.", "Banking System - Connection Error.", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }*/
-        
-        
+      
         DefaultTableModel model = (DefaultTableModel) tblAllUsers.getModel();
         try {
 

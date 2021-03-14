@@ -25,7 +25,7 @@ import java.lang.NumberFormatException;
 
 /**
  *
- * @author DHARSHITHA
+ * @author 
  */
 public class AccountDAO {
 
@@ -128,30 +128,7 @@ public class AccountDAO {
 
         ArrayList<Account> accounts;
         accounts = new ArrayList<Account>();
-        /*try {
-
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-            statement = conn.createStatement();
-            PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ALL_ACCOUNTS);
-            System.out.println(preparedStatement);
-            // Execute the query or update query
-            ResultSet rs = preparedStatement.executeQuery();
-
-            // Process the ResultSet object.
-            while (rs.next()) {
-                String accountNo = rs.getString("acct_no");
-                String customerName = rs.getString("customer_name");
-                String sex = rs.getString("sex");
-                String branch = rs.getString("branch");
-                String accountType = rs.getString("account_type");
-                double initialBalance = rs.getDouble("initial_balance");
-
-                accounts.add(new CommonAccount(accountNo, customerName, sex, branch, accountType, initialBalance));
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }*/
+    
         Account account = null;
         try {
             String nameNumberString;
@@ -171,8 +148,7 @@ public class AccountDAO {
             }
 
             // Opening file in reading and write mode.
-            RandomAccessFile raf
-                    = new RandomAccessFile(file, "rw");
+            RandomAccessFile raf = new RandomAccessFile(file, "rw");
             boolean found = false;
 
             // Traversing the file
@@ -211,7 +187,6 @@ public class AccountDAO {
 
         try {
             String[] data = null;
-
             String nameNumberString;
 
             String accountNo = account.getAcctNo();

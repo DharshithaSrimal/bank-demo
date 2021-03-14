@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 /**
  *
- * @author getSmartA
+ * @author 
  */
 public interface RMIInterface extends Remote {
 

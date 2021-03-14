@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Cyber
+ * @author 
  */
 public class HelpUI extends javax.swing.JFrame {
 
