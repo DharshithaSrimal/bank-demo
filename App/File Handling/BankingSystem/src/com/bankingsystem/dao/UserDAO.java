@@ -6,7 +6,6 @@
 package com.bankingsystem.dao;
 
 import com.bankingsystem.model.User;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import java.io.File;
@@ -20,14 +19,11 @@ import java.lang.NumberFormatException;
  */
 public class UserDAO {
 
-    public String checkPassword(String username, String password) throws ClassNotFoundException, SQLException, IOException {
+    public String checkPassword(String username, String password) throws ClassNotFoundException, IOException {
         String role = "";
-        User user = null;
         String nameNumberString;
         String un;
         String pw;
-        long number;
-        int index;
 
         // Using file pointer creating the file.
         File file = new File("AccountUsers.txt");
@@ -70,22 +66,6 @@ public class UserDAO {
     //Create account
     public void createUser(User user) throws ClassNotFoundException {
 
-        /*try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-            statement = conn.createStatement();
-            PreparedStatement preparedStatement = conn.prepareStatement(INSERT_USER_SQL);
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, "Cashier");
-
-            System.out.println(preparedStatement);
-            // Execute the query or update query
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            printSQLException(e);
-        }*/
         try {
             String[] data = null;
             String nameNumberString;
@@ -190,20 +170,7 @@ public class UserDAO {
     //Delete account
     public boolean deleteAccount(String username) throws ClassNotFoundException {
         boolean rowDeleted = false;
-        /*try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-            statement = conn.createStatement();
-            PreparedStatement preparedStatement = conn.prepareStatement(DELETE_USER_SQL);
-            preparedStatement.setString(1, username);
-
-            System.out.println(preparedStatement);
-            // Execute the query or update query
-            rowDeleted = preparedStatement.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            printSQLException(e);
-        }*/
+        
         try {
             String[] data = null;
 
@@ -335,22 +302,6 @@ public class UserDAO {
     //Update account
 
     public void updateCashier(User cashier) throws ClassNotFoundException {
-        /*try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(DATABASE_URL, "root", "");
-            statement = conn.createStatement();
-            PreparedStatement preparedStatement = conn.prepareStatement(UPDATE_CASHIER_SQL);
-            preparedStatement.setString(1, cashier.getUsername());
-            preparedStatement.setString(2, cashier.getPassword());
-            preparedStatement.setInt(3, cashier.getId());
-            System.out.println(preparedStatement);
-
-            // Execute the query or update query
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            printSQLException(e);
-        }*/
         
         try {
             String un = cashier.getUsername();
@@ -529,19 +480,4 @@ public class UserDAO {
         return users;
     }
 
-    private void printSQLException(SQLException ex) {
-        for (Throwable e : ex) {
-            if (e instanceof SQLException) {
-                e.printStackTrace(System.err);
-                System.err.println("SQLState: " + ((SQLException) e).getSQLState());
-                System.err.println("Error Code: " + ((SQLException) e).getErrorCode());
-                System.err.println("Message: " + e.getMessage());
-                Throwable t = ex.getCause();
-                while (t != null) {
-                    System.out.println("Cause: " + t);
-                    t = t.getCause();
-                }
-            }
-        }
-    }
 }
